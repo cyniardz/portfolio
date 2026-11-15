@@ -5,7 +5,7 @@
 바이브 코딩으로 만든 웹 작업과 영상 편집 작업을 한곳에 담은 개인 포트폴리오 웹사이트입니다.
 이 사이트 자체도 기획, 디자인, 퍼블리싱을 직접 한 작업물입니다.
 
-- Live: (배포 후 추가)
+- Live: https://portfolio-kappa-blush-qjbykox6ig.vercel.app
 - 도구: VS Code, Claude, HTML, CSS, JavaScript (프레임워크 없이)
 
 ---
