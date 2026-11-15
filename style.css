@@ -1,0 +1,1035 @@
+/* =========================================
+   글꼴: 사이트 안에 넣은 Pretendard (웹용 가벼운 파일, 3굵기)
+   ========================================= */
+@font-face {
+  font-family: "Pretendard";
+  src: url("fonts/Pretendard-Regular.subset.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("fonts/Pretendard-SemiBold.subset.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("fonts/Pretendard-Bold.subset.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* 로딩 전용 고정폭 글꼴: 로딩 글자만 남긴 작은 파일 (글자를 바꾸면 파일도 다시 만들어야 함) */
+@font-face {
+  font-family: "LoaderMono";
+  src: url("fonts/NanumGothicCoding-Regular.loader.woff") format("woff");
+  font-weight: 400;
+  font-display: block;
+}
+/* 작업물 섹션 글꼴 (타자기 느낌 고정폭): projects.json에 쓰인 글자만 남긴 파일
+   → projects.json 글을 바꾸면 fonts/subset-works.py로 다시 만들어야 함 */
+@font-face {
+  font-family: "WorksMono";
+  src: url("fonts/NanumGothicCoding-Regular.works.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+/* 타자기 느낌 굵은 영문 (MAKE WEB, Skill 제목): 나눔고딕코딩 Bold에서 영문·숫자·기호만 남긴 파일 (fonts/subset-type.py) */
+@font-face {
+  font-family: "TypeBold";
+  src: url("fonts/NanumGothicCoding-Bold.type.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LoaderMono";
+  src: url("fonts/NanumGothicCoding-Bold.loader.woff") format("woff");
+  font-weight: 700;
+  font-display: block;
+}
+
+/* =========================================
+   기본 값 (색, 간격) — 미정 값은 여기서 바꾸면 전체에 반영됨
+   ========================================= */
+:root {
+  --bg: #f2f2eb;          /* 미색 배경 (Heron 배경에서 추출) */
+  --accent: #f54600;      /* 주황 (Heron에서 추출): 커서, 꺾쇠, 눈금 같은 표시 */
+  --accent-text: #c83a12; /* 주황 글자: 작은 글씨도 읽히도록 조금 진하게 */
+  --ink: #1e1e1c;         /* 글자 */
+  --muted: #77726a;       /* 흐린 글자 */
+  --line: #b3b3af;        /* 칸 선 (Heron 선 색) */
+  --frame-gap: 7px;       /* 화면 끝 ~ 테두리 간격 (Heron 기준) */
+  --header-h: 64px;
+  --pad: 20px;            /* 칸 안쪽 여백 */
+  --cols: 12;
+  --panel-h: 100vh;       /* 테두리 안쪽 높이 (script.js가 계산해서 넣음) */
+  /* 종이 질감: 밝은 섬유 얼룩(l) + 고운 어두운 입자(d) 두 겹을 반복 */
+  --paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='l'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.3' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 0.98 1.2 0 0 0 -0.5'/%3E%3C/filter%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.32 0 0 0 0 0.27 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23l)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E");
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  background-color: var(--bg);
+  background-image: var(--paper);
+  color: var(--ink);
+  font-family: "Pretendard", -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow: hidden;       /* 바깥 화면은 스크롤하지 않음 */
+}
+
+a { color: inherit; text-decoration: none; }
+ol { list-style: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; text-align: left; }
+
+/* 웹/영상 상태에 따라 보이는 것 */
+body[data-mode="web"] .only-video,
+body[data-mode="video"] .only-web { display: none; }
+
+/* =========================================
+   로딩
+   ========================================= */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+.loader-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg);
+  background-image: var(--paper);
+  transition: transform 0.75s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.loader-top    { top: 0;    align-items: flex-end;   padding-bottom: 4px; }
+.loader-bottom { bottom: 0; align-items: flex-start; padding-top: 4px; }
+
+.loader-line {
+  position: relative;
+  font-family: "LoaderMono", ui-monospace, monospace;
+  font-size: 15px;                        /* 작게 (임시) */
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.loader-top .loader-line    { font-weight: 700; }
+.loader-bottom .loader-line { font-weight: 400; }
+
+.ghost { visibility: hidden; }           /* 자리만 차지 */
+.typed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* 사각형 커서 */
+.caret {
+  display: inline-block;
+  width: 0.62em;
+  height: 1.15em;
+  margin-left: 1px;
+  background: var(--accent);
+  visibility: hidden;
+}
+.caret.is-on { visibility: visible; }
+.caret.is-blink { visibility: visible; animation: caret-blink 1s steps(1) infinite; }
+@keyframes caret-blink { 50% { visibility: hidden; } }
+
+/* 가운데 선: 글씨가 써지는 만큼 가운데에서 양쪽으로 그어짐 (--line-p: 0~1, script.js가 넣음) */
+.loader-half::after {
+  content: "";
+  position: absolute;
+  left: var(--frame-gap);
+  right: var(--frame-gap);
+  height: 1px;
+  background: var(--line);
+  transform: scaleX(var(--line-p, 0));
+  transition: transform 0.16s linear;
+}
+.loader-top::after    { bottom: 0; }
+.loader-bottom::after { top: 0; opacity: 0; }   /* 열리기 전에는 윗선 하나만 (두 줄로 겹쳐 보이지 않게) */
+.loader.is-open .loader-bottom::after { opacity: 1; }
+
+/* 열림: 선이 히어로 그림 칸의 위·아래 선 자리까지만 벌어짐 (거리는 script.js가 재서 넣음) */
+.loader.is-open .loader-top    { transform: translateY(var(--open-top)); }
+.loader.is-open .loader-bottom { transform: translateY(var(--open-bottom)); }
+.loader-line { transition: opacity 0.3s; }
+.loader.is-open .loader-line { opacity: 0; }
+.loader { transition: opacity 0.4s; }
+.loader.is-fade { opacity: 0; }
+.loader.is-done { display: none; }
+/* 웹/영상 전환 때 같은 종이를 다시 씀: 가운데 글씨(방동훈 / Portfolio)는 안 보이게 */
+.loader.is-switch .loader-line { opacity: 0; }
+/* 전환 중 히어로 연출을 움직임 없이 처음 상태로 되돌릴 때 */
+body.hero-reset * { transition: none !important; animation: none !important; }
+
+/* =========================================
+   고정 테두리 + 안쪽 스크롤
+   ========================================= */
+.frame {
+  position: fixed;
+  inset: var(--frame-gap);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.scroll {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;   /* 스크롤은 되고 막대만 숨김 */
+}
+.scroll::-webkit-scrollbar { display: none; }
+.scroll-inner { position: relative; }
+
+
+/* =========================================
+   12칸 기준 — 모든 줄(row)은 같은 12칸을 쓴다
+   ========================================= */
+.row {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  border-bottom: 1px solid var(--line);
+}
+
+.cell {
+  padding: var(--pad);
+  border-left: 1px solid var(--line);
+  min-width: 0;
+}
+.cell:first-child { border-left: none; }
+
+.full    { grid-column: span 12; }
+.span-2  { grid-column: span 2; }
+.span-3  { grid-column: span 3; }
+.span-4  { grid-column: span 4; }
+.span-6  { grid-column: span 6; }
+.span-8  { grid-column: span 8; }
+.span-10 { grid-column: span 10; }
+
+
+/* =========================================
+   공통 글자
+   ========================================= */
+.label { display: flex; gap: 10px; align-items: baseline; font-weight: 600; }
+.num, .meta {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.text { color: var(--ink); }
+.text-lg { font-size: 22px; line-height: 1.5; font-weight: 400; }
+.about-intro { word-break: keep-all; }
+.about > .row:first-child .cell { padding-block: 34px; }   /* 소개 첫 줄 위아래 같은 여백 (2026-11-13) */
+.about > .row:first-child .label { align-items: center; }   /* "소개"를 줄 높이 가운데에 */
+.about-intro strong { display: block; font-weight: 700; margin-bottom: 6px; }
+
+/* 이미지 자리 표시 (임시) */
+.placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background:
+    linear-gradient(to top right, transparent calc(50% - 0.5px), var(--line) 50%, transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom right, transparent calc(50% - 0.5px), var(--line) 50%, transparent calc(50% + 0.5px));
+  outline: 1px dashed var(--line);
+  display: grid;
+  place-items: center;
+}
+.placeholder span {
+  background: var(--bg);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* =========================================
+   헤더 — 숨김·등장은 script.js가 is-hidden을 붙이고 뗀다
+   ========================================= */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--header-h);
+  background-color: var(--bg);
+  background-image: var(--paper);
+  background-attachment: fixed;   /* 본문 질감과 무늬가 이어지도록 화면 기준으로 깔기 */
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.header.is-hidden { transform: translateY(-100%); }
+.header .cell { display: flex; align-items: center; padding-block: 0; }
+/* 헤더: 칸을 나누지 않고 왼쪽에 로고 + Web / Video 전환. 현재 모드만 주황, 나머지는 흐린 글자 */
+.header .logo { grid-column: 1 / -1; gap: 12px; font-weight: 700; font-size: 17px; padding-inline: 34px; }   /* 아래 Skill 제목과 같은 시작 위치 */
+.header-name { margin-left: auto; white-space: nowrap; }   /* 오른쪽 끝으로 */
+.mode-switch { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--muted); }
+.mode-switch button { color: inherit; }
+body[data-mode="web"] [data-switch="web"],
+body[data-mode="video"] [data-switch="video"] { color: var(--accent-text); cursor: default; }
+
+/* =========================================
+   히어로
+   ========================================= */
+.hero { min-height: calc(var(--panel-h) - var(--header-h)); display: grid; border-bottom: 1px solid var(--line); overflow: hidden; }
+/* 히어로가 보이는 동안은 바깥 테두리의 양옆 선을 숨김 (script.js가 body에 in-hero를 붙임) */
+body.in-hero .frame { border-left-color: transparent; border-right-color: transparent; }
+
+/* 히어로 칸 배치 (PC, 2026-11-12): 칸 선 없음. 가운데 사진(396px)은 윗줄에만, 아래 띠는 화면 폭 전체를 세 칸으로
+   양옆 글은 작업물 섹션과 같은 자리에서 시작하고 끝남 (목록 폭 399px, 설명 폭 334px → 남는 만큼 바깥쪽 여백) */
+@media (min-width: 769px) {
+  .hero { grid-template-columns: 1fr 396px 1fr; grid-template-rows: 1fr; }
+  .hero-photo { grid-column: 2; grid-row: 1; }
+  /* 양옆 칸: 사진과 간격을 넉넉히 두어 가려지지 않게 (2026-11-12) */
+  /* 위 여백 --hero-top을 양쪽이 같이 써서, 오른쪽 툴 묶음의 윗선이 MAKE WEB 윗선과 맞음 */
+  .hero { --hero-top: clamp(40px, 4vw, 72px); }
+  .hero .hero-a { grid-column: 1; grid-row: 1; padding: var(--hero-top) clamp(20px, 4vw, 80px) var(--pad) clamp(20px, 5vw, 100px); }
+  /* MAKE 윗선 = 사진 속 이마 높이: 사진은 위에서 90px 내려온 곳부터 시작하고, 이마는 사진 높이의 약 20% 지점 */
+  .hero .hero-a { padding-top: calc(90px + 0.2 * (var(--panel-h) - var(--header-h) - 90px)); }
+  .hero .hero-c { grid-column: 3; grid-row: 1; padding: calc(var(--hero-top) + 0.1em) clamp(20px, 4vw, 80px) var(--pad) clamp(60px, 9vw, 190px); font-size: clamp(40px, 5.5vw, 112px); }
+  .hero .hero-c > * { font-size: 17px; }   /* 위 font-size는 0.1em(글자 윗여백) 계산용 */
+}
+
+/* 등장 순서 (script.js가 로딩 뒤 body에 hero-set을 붙이면 시작):
+   0s 사진 → 0.6s 양옆이 가운데서 바깥으로(MAKE WEB은 테두리 글자) → 1.6s MAKE WEB 색 채움 → 2.3s~ 목록 한 줄씩 / 1s 오른쪽 링크·QR */
+.hero-cell {
+  position: relative;
+  z-index: 1;                       /* 양옆 글이 사진에 가려지지 않게 */
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 40px var(--pad) var(--pad);
+  font-size: 17px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+.hero-a > *, .hero-c > * { opacity: 0; transition: opacity 0.5s, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.hero-a > * { transform: translateX(40%); }
+.hero-c > * { transform: translateX(-40%); }
+body.hero-set .hero-a > *, body.hero-set .hero-c > * { opacity: 1; transform: none; transition-delay: 0.6s; }
+body.hero-set .hero-c > .hero-qr { transition-delay: 1.2s; }
+
+/* MAKE WEB: 테두리 글자로 나왔다가 오른쪽(B)에서 왼쪽(M)으로 색이 채워짐
+   글자 모양으로 자른 배경(왼쪽 절반 투명 + 오른쪽 절반 글자색)을 옮겨서 채움 */
+.hero-make {
+  width: fit-content;   /* 채우는 배경이 글자 폭에만 깔리게 */
+  font-family: "TypeBold", ui-monospace, monospace;
+  font-size: clamp(40px, 5.5vw, 112px); font-weight: 700; line-height: 1; white-space: nowrap;
+  color: transparent; -webkit-text-stroke: 1px var(--ink);
+  background: linear-gradient(to right, transparent 50%, var(--ink) 50%) 0 0 / 200% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text;
+}
+/* 타자기 효과 (2026-11-12): 고정폭 글꼴이라 한 글자 = 1ch. 폭을 한 글자씩 늘리고, 오른쪽 테두리가 주황 커서 역할
+   한 글자 0.12초 → 다 치면 커서가 두 번 깜빡이고 사라짐 → 색 채우기 */
+.hero-a > .hero-make { --n: 8; opacity: 1; transform: none; width: 0; overflow: hidden; border-right: 0.55ch solid transparent; background-origin: border-box; box-sizing: content-box; /* 커서(테두리)는 폭 바깥 */ }
+body[data-mode="video"] .hero-make { --n: 10; }   /* MAKE VIDEO = 10글자 */
+/* 영상 모드: 히어로 그림처럼 흑연 연필 결로 칠해짐 (테두리 선은 검은색 그대로)
+   make-graphite.webp = 왼쪽 절반 투명 | 오른쪽 절반 연필 결 → 웹과 같은 방식으로 밀어서 B → M 방향으로 칠함 */
+body[data-mode="video"] .hero-make { background-image: url("images/hero/make-graphite.webp"); background-color: transparent; }
+body.hero-set[data-mode="video"] .hero-a > .hero-make { animation-timing-function: steps(10), steps(1); }   /* steps()에는 변수를 못 써서 따로 */
+body.hero-set .hero-a > .hero-make {
+  width: calc(var(--n) * 1ch);
+  animation: make-type calc(var(--n) * 0.12s) steps(8) 0.6s both, make-caret 2.4s steps(1) 0.6s both;
+  background-position: 100% 0; transition: background-position 1s cubic-bezier(0.6, 0, 0.3, 1) 2s;
+}
+@keyframes make-type { from { width: 0; } to { width: calc(var(--n) * 1ch); } }
+@keyframes make-caret {
+  0%, 55%, 75% { border-right-color: var(--accent); }
+  65%, 85%, 100% { border-right-color: transparent; }
+}
+
+/* 작업물 세 줄: 바로 위 줄 자리에서 한 단계씩 내려옴 (MAKE WEB → 첫 줄 → 둘째 줄 → 셋째 줄) */
+.hero-list { --gap: clamp(16px, 2vw, 36px); list-style: none; display: grid; gap: var(--gap); margin-top: var(--gap); font-size: clamp(18px, 1.3vw, 24px); }
+.hero-list li { opacity: 0; transform: translateY(calc(-100% - var(--gap))); transition: opacity 0.35s, transform 0.55s cubic-bezier(0.3, 0.7, 0.2, 1); }
+body.hero-set .hero-list li { opacity: 1; transform: none; }
+body.hero-set .hero-list li:nth-child(1) { transition-delay: 2.6s; }
+body.hero-set .hero-list li:nth-child(2) { transition-delay: 3.1s; }
+body.hero-set .hero-list li:nth-child(3) { transition-delay: 3.6s; }
+
+/* 오른쪽: 사용 툴(흑백 로고 + 이름) → 그 아래 GitHub·Instagram 아이콘 / 칸 아래쪽 오른편에 QR 코드 */
+.hero-c { justify-content: space-between; }
+.tool-logos { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 22px 12px; }
+.tool-logos li { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; font-size: 12px; color: var(--muted); line-height: 1.3; }
+/* 툴 이름에 마우스를 올리면 글자 뒤에 주황 붓질이 왼쪽부터 칠해짐 (누르는 기능 없음, 마우스 모양 그대로. 내가 정한 예외) */
+.tool-name { position: relative; z-index: 0; padding: 1px 4px; cursor: default; }
+.tool-name::before {
+  content: ""; position: absolute; z-index: -1; inset: -2px -5px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 20 4, 45 7, 70 4 S 96 5, 98 9 C 99 14, 96 18, 97 22 C 80 27, 55 24, 32 27 S 6 26, 2 22 C 4 18, 1 14, 3 9 Z' fill='%23F54600' fill-opacity='0.32'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.5, 0, 0.2, 1);
+}
+.tool-logos li:hover .tool-name::before { transform: scaleX(1); }
+/* 로고는 두 모드 모두 흑백 (2026-11-12: 컬러가 찢긴 얼굴과 시선을 다퉈서). 웹은 검게, 영상은 그림과 같은 연필 회색
+   로고 파일 자체에는 브랜드 색이 들어 있음 → 나중에 컬러로 되돌리려면 filter만 지우면 됨 */
+.tool-logos img, .tool-noicon { display: block; width: 26px; height: 26px; filter: brightness(0); opacity: 0.8; }
+body[data-mode="video"] .tool-logos img, body[data-mode="video"] .tool-noicon { opacity: 0.55; }
+/* 영상 모드 붓질: 주황 대신 먹색 */
+body[data-mode="video"] .tool-name::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 20 4, 45 7, 70 4 S 96 5, 98 9 C 99 14, 96 18, 97 22 C 80 27, 55 24, 32 27 S 6 26, 2 22 C 4 18, 1 14, 3 9 Z' fill='%231E1E1E' fill-opacity='0.2'/%3E%3C/svg%3E");
+}
+.tool-noicon { display: grid; place-items: center; border: 1.5px solid var(--ink); border-radius: 6px; font-size: 14px; font-weight: 700; color: var(--ink); }
+/* GitHub·Instagram: 툴 격자와 같은 칸·간격으로 바로 아래 줄에 (흑백 처리 없이 원래 검은 아이콘) */
+.hero-links { margin-top: 22px; }
+.hero-links img { opacity: 1; }
+body[data-mode="video"] .hero-links img { opacity: 0.7; }
+/* 링크도 툴과 같은 모양(아이콘 + 이름 가운데)과 같은 붓질 효과. 링크라 손가락 모양은 유지 */
+.hero-links a { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.hero-links .tool-name { cursor: pointer; }
+/* QR: 배경 없이 무늬만. 서로 넉넉히 떨어뜨리고 둘레를 비워 두어 휴대폰으로 찍기 쉽게 */
+.hero-qr { display: flex; gap: 56px; align-self: flex-end; }
+.hero-qr figure { display: grid; gap: 10px; justify-items: center; font-size: 12px; color: var(--muted); }
+.hero-qr img, .qr-empty { width: 112px; height: 112px; }
+.hero-qr img, .qr-empty { padding: 10px; box-sizing: content-box; }
+.qr-empty { display: grid; place-items: center; border: 1px dashed var(--line); font-size: 12px; color: var(--muted); }
+
+/* 작업물 보기: 히어로 연출(목록 마지막 줄 3.6s)이 끝난 뒤 오른쪽 끝에서 밀려 나와 몇 초 머물다 다시 들어감 */
+.hero { position: relative; }
+.works-peek {
+  position: absolute; right: 0; bottom: 196px; z-index: 2;   /* QR 묶음(아래에서 184px) 바로 위 빈자리 */
+  padding: 14px clamp(24px, 2.5vw, 40px);
+  background: var(--bg); border: 1px solid var(--line); border-right: none;
+  font-weight: 600; color: var(--accent-text); white-space: nowrap;
+  transform: translateX(100%); visibility: hidden;
+}
+body.hero-set .works-peek { animation: peek 7s 4.4s both; }
+.works-peek:hover, .works-peek:focus-visible { animation-play-state: paused; }   /* 누르려는 동안은 멈춤 */
+@keyframes peek {
+  0%   { transform: translateX(100%); visibility: visible; }
+  8%, 88% { transform: none; visibility: visible; }
+  100% { transform: translateX(100%); visibility: hidden; }
+}
+
+.profile { width: min(320px, 60vw); height: auto; aspect-ratio: 1; margin: auto; }
+/* 실사 프로필: 칸 높이에 맞추고 띠 선 위에 붙임. 칸 높이에 영향을 주지 않게 absolute
+   사진 오른쪽은 잘린 어깨를 이어 그린 부분(전체 폭의 18%) → 원래 사진 부분(82%)이 칸 가운데에 오도록 41%만 왼쪽으로 */
+.hero-photo { padding: 0; }
+.profile-photo {
+  position: absolute; bottom: 0; left: 50%; transform: translate(-41%, 16px);
+  display: block; height: calc(100% - 90px); width: auto; max-width: none;   /* 아래 띠를 없앤 뒤에도 사진 크기는 그대로 (커지면 어깨가 QR을 덮음) */
+  opacity: 0; transition: opacity 0.7s, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+body.hero-set .profile-photo { opacity: 1; transform: translate(-41%, 0); }
+/* 영상 모드 사진 (2026-11-12): 웹과 반대로 그림은 흑백, 찢어진 얼굴 부분만 컬러
+   컬러 사진 위에 구멍 난 그림을 덮고, 구멍을 메운 띠 조각이 옆으로 떨어져 나감 (Video로 바꿀 때마다 다시 재생) */
+.tear { position: absolute; inset: 0; }
+/* 찢기는 연출 (만화 표지 레퍼런스): 1.3초까지 온전한 그림 → 찢김이 왼쪽에서 오른쪽으로 번져 나감(--rip)
+   찢김이 지나간 자리: 온전한 그림은 사라지고 찢긴 그림(흰 종이 속살)·컬러 얼굴이 보임, 띠 조각은 위로 들리며 떨어져 나감 */
+@property --rip { syntax: "<percentage>"; inherits: false; initial-value: -10%; }
+.tear-whole { -webkit-mask-image: linear-gradient(100deg, transparent calc(var(--rip) - 2%), #000 calc(var(--rip) + 2%)); mask-image: linear-gradient(100deg, transparent calc(var(--rip) - 2%), #000 calc(var(--rip) + 2%)); }
+.tear-strip { -webkit-mask-image: linear-gradient(100deg, #000 calc(var(--rip) - 2%), transparent calc(var(--rip) + 2%)); mask-image: linear-gradient(100deg, #000 calc(var(--rip) - 2%), transparent calc(var(--rip) + 2%)); }
+body.hero-set .tear-whole { animation: rip 0.9s cubic-bezier(0.6, 0, 0.35, 1) 1.3s both; }
+body.hero-set .tear img:not(.tear-whole) { animation: tear-show 1.3s steps(1) both; }
+body.hero-set .tear img.tear-strip { animation: tear-show 1.3s steps(1) both, rip 0.9s cubic-bezier(0.6, 0, 0.35, 1) 1.3s both, peel 1.3s cubic-bezier(0.5, 0, 0.8, 0.3) 1.3s both; }
+@keyframes tear-show { from { visibility: hidden; } to { visibility: visible; } }
+@keyframes rip { from { --rip: -10%; } to { --rip: 110%; } }
+@keyframes peel {   /* 찢긴 조각: 오른쪽 끝을 축으로 위로 들리며 흐려짐 */
+  0%   { transform: translate(-41%, 0); opacity: 1; }
+  100% { transform: translate(-40%, -7%) rotate(-6deg); opacity: 0; }
+}
+.tear-strip { transform-origin: 100% 30%; }
+
+
+/* =========================================
+   작업물 — PC: 화면 고정 스크롤
+   ========================================= */
+.works-track { position: relative; }   /* 높이는 script.js가 작업물 개수로 계산 */
+
+/* 선 없이 넓은 여백 위에 세 덩어리만. 이미지를 화면 가운데에 두고 목록·설명을 붙임 (tour-kyrgyzstan.com 실측) */
+.works-sticky {
+  position: sticky;
+  top: 0;
+  height: var(--panel-h);
+}
+.works-stage {
+  display: grid;
+  grid-template-columns: 1fr 455px 1fr;   /* 가운데 칸 = 이미지 폭 (2026-11-13 396 → 455px, 높이 400px은 script.js) */
+  height: 100%;
+  align-items: center;
+}
+
+/* 왼쪽 목록: 이미지 왼쪽 119px 떨어짐 */
+/* 글자 크기·간격·폭은 tour-kyrgyzstan.com 실측값 (12px, 줄 26px, 폭 280px) */
+/* 2026-11-12: 글자 12px → 15px, 목록 위에 "기간" 머리글 (오른쪽 숫자 칸 위) */
+.works-list { justify-self: end; width: min(100%, 399px); padding-right: min(119px, 6vw); }
+.works-mode { display: flex; justify-content: space-between; max-width: 280px; margin-bottom: 18px; font-size: 13px; }
+.works-list ol, .works-list .works-mode { margin-left: auto; }   /* 목록을 이미지 쪽에 붙여 오른쪽 설명과 간격을 똑같이 */
+.works-list ol { max-width: 280px; }
+.works-list button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+}
+.works-list button .meta { font-size: inherit; color: inherit; }   /* 기간: 제목과 같은 크기, 현재 항목이면 제목과 같이 주황 */
+.works-list li.is-current button { color: var(--accent-text); }
+/* 작업물 글은 모두 같은 타자기 느낌 글꼴 (목록·머리글·기간·설명, 모바일 포함) */
+.works-list, .works-list .meta, .works-desc, .works-mobile, .works-mobile .meta {
+  font-family: "WorksMono", ui-monospace, monospace;
+}
+
+/* 가운데 이미지: 455×400px (396×348과 같은 비율). 세로 띠를 옮겨 현재 작업물을 가운데에 둔다 */
+.works-image { align-self: stretch; }
+.strip-view {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  overflow: clip;      /* hidden은 버튼에 초점이 가면 브라우저가 몰래 스크롤해 이미지가 사라짐 → clip은 스크롤 불가 */
+  /* 위아래 끝으로 갈수록 흐려짐 */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%);
+}
+.works-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;             /* 이미지 폭 455px (높이 400px은 script.js) */
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.strip-item { position: relative; flex: none; opacity: 0.4; transition: opacity 0.6s; }
+.strip-item.is-current { opacity: 1; }
+
+/* 이미지 자리 (임시): 단색 면 */
+.tone {
+  width: 100%;
+  height: 100%;
+  background: #e3ded4;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+img.tone { display: block; object-fit: cover; }   /* 칸 크기(455×400)는 고정, 사진을 칸에 맞춤 */
+
+/* 맨 위 반투명 칸 (마지막 작업물) */
+.strip-ghost { flex: none; height: 400px; opacity: 0.4; pointer-events: none; }
+
+/* 명화 느낌: 색을 눌러 오래된 유화처럼 + 위에 바니시(누런 막)·캔버스 결·가장자리 어둡게
+   2026-11-12: 너무 어두워서 전체를 약하게 (이전 값: sepia .35 saturate .6 contrast 1.06 brightness .93 / 가장자리 .45 / 막 .18 / 결 .35) */
+.strip-item img.tone, .m-image img.tone {
+  filter: sepia(0.18) saturate(0.82) contrast(1.03);
+}
+.strip-item::after, .m-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 60%, rgba(60, 38, 18, 0.2) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.35' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0 0.22 0 0 0 0.2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),
+    rgba(196, 150, 90, 0.08);
+}
+.actions { z-index: 2; }
+
+/* 현재 이미지 네 모서리 꺾쇠 */
+.corners {
+  position: absolute;
+  inset: -6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  background:
+    linear-gradient(var(--accent), var(--accent)) top left / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top left / 1px 14px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top right / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top right / 1px 14px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom left / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom left / 1px 14px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom right / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom right / 1px 14px no-repeat;
+}
+.strip-item.is-current .corners { opacity: 1; }
+
+/* 오른쪽 설명: 이미지 오른쪽 119px 떨어짐 (2026-11-12: 54px → 왼쪽 목록과 같은 간격, 글자 12px → 15px) */
+.works-desc { justify-self: start; width: min(100%, 399px); padding-left: min(119px, 6vw); }
+.works-desc .text { color: var(--ink); font-size: 14px; line-height: 1.8; max-width: 280px; }
+
+/* 문자 효과: 완성 문장 자리를 먼저 잡고, 그 위에서 문자가 돌아감 → 줄이 흔들리지 않음 */
+.scramble { position: relative; word-break: keep-all; }   /* 한글 단어 중간에서 줄바꿈하지 않음 */
+.scramble .ghost { visibility: hidden; }
+.scramble .live { position: absolute; inset: 0; }
+.scramble .live b { font-weight: inherit; color: var(--accent-text); }   /* 돌아가는 글자: 조금 어두운 주황 */
+/* 이미지 위 버튼: 현재 이미지에 마우스를 올리면 아래쪽 가운데에 나타남 */
+.actions {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.strip-item.is-current:hover .actions { opacity: 1; pointer-events: auto; }
+.action {
+  display: block;
+  padding: 7px 14px;
+  background: var(--accent);
+  color: #fff;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  cursor: pointer;                 /* 버튼에서만 손가락 모양 */
+  transition: background-color 0.15s;
+}
+.action:hover { background: var(--accent-text); }   /* 올리면 조금 진해짐 */
+.works-image { cursor: default; }
+
+/* 작업물 다음 섹션과의 경계 */
+.skill { border-top: 1px solid var(--line); }
+
+/* 스킬 위: 큰 제목 + 짧은 설명 */
+.skill-top .cell { padding: 44px 34px; }   /* 위아래 같은 간격 (2026-11-13) */
+/* 제목과 짧은 설명을 한 칸에 나란히 (설명은 제목 글자 아래선에 맞춤) */
+.skill-top .cell { display: flex; align-items: baseline; gap: clamp(28px, 3vw, 56px); flex-wrap: wrap; }
+.skill-heading { font-family: "TypeBold", ui-monospace, monospace; font-size: clamp(32px, 3.4vw, 56px); line-height: 1; font-weight: 700;
+  -webkit-text-stroke: 0.04em currentColor; }   /* 글꼴에 Bold보다 굵은 게 없어 테두리를 덧그려 더 굵게 */
+.skill-lead { color: var(--muted); font-size: 18px; line-height: 1.4; }
+
+/* 스킬 4칸 (Heron 칸 구성): 분야·번호 / 선 그림 / 도구 / 할 수 있는 일. subgrid로 네 칸의 높이를 맞춘다 */
+.skill-grid { grid-template-rows: auto auto auto 1fr; }
+.skill-grid .cell {
+  grid-row: span 4;
+  display: grid;
+  grid-template-rows: subgrid;
+  padding: 0;
+}
+.skill-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 34px;
+  font-weight: 600;   /* "소개" 라벨과 같은 글꼴 (2026-11-13) */
+  font-size: 14px;
+  border-bottom: 1px dashed var(--line);
+}
+
+/* 그림: 섹션에 들어오면 스케치가 그려지고(짧게), 마우스를 올리면 색이 칠해지며 완성됨
+   붓질 모양(지그재그) 마스크의 선 길이를 늘려 가며 그림을 드러낸다 */
+.skill-art {
+  position: relative;
+  height: clamp(240px, 21vw, 400px);
+  display: grid;
+  place-items: center;
+  border-bottom: 1px dashed var(--line);
+}
+.skill-art .art { width: 84%; height: 84%; }
+.skill-art .stroke {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 130;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;            /* 1 = 아직 안 칠함, 0 = 다 칠함 */
+}
+.skill-grid.is-drawn .stroke-sketch { animation: sketch-in 1.3s cubic-bezier(0.4, 0, 0.6, 1) forwards; }
+.skill-grid.is-drawn .cell:nth-child(2) .stroke-sketch { animation-delay: 0.12s; }
+.skill-grid.is-drawn .cell:nth-child(3) .stroke-sketch { animation-delay: 0.24s; }
+.skill-grid.is-drawn .cell:nth-child(4) .stroke-sketch { animation-delay: 0.36s; }
+@keyframes sketch-in { to { stroke-dashoffset: 0; } }
+.stroke-color { transition: stroke-dashoffset 0.35s ease-in; }                       /* 마우스를 떼면 빠르게 지워짐 */
+.skill-grid .cell:hover .stroke-color { stroke-dashoffset: 0; transition: stroke-dashoffset 0.7s cubic-bezier(0.3, 0, 0.3, 1); }
+.skill-grid .cell[data-skill] .skill-art { cursor: pointer; }
+.skill-art::before,
+.skill-art::after {
+  content: "";
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.skill-art::before {   /* 모눈 */
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(179, 179, 175, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(179, 179, 175, 0.25) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.skill-art::after {    /* 아래 양 끝 + 표시 */
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  height: 11px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) left 5px top 0 / 1px 11px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) left 0 top 5px / 11px 1px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) right 5px top 0 / 1px 11px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) right 0 top 5px / 11px 1px no-repeat;
+}
+.skill-grid .cell:hover .skill-art::before,
+.skill-grid .cell:hover .skill-art::after { opacity: 1; }
+
+.skill-title {
+  padding: 34px;   /* 위아래 같은 여백 (2026-11-13) */
+  font-size: clamp(22px, 1.75vw, 32px);
+  line-height: 1.4;        /* 도구 이름 줄 사이 간격 (1에서 넓힘) */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.skill-title .meta { font-size: 12px; letter-spacing: 0; }
+
+/* =========================================
+   스킬 작품 팝업: 뒤는 흐리게, 테두리 안에 창 하나
+   ========================================= */
+.modal {
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+  display: grid;
+  place-items: center;
+  /* 어둡게 하지 않고 살짝 흐리게만: 바깥 테두리 밖 종이색과 차이가 나지 않게 */
+  background: rgba(242, 242, 235, 0.3);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+}
+.modal[hidden] { display: none !important; }   /* .modal.is-detail의 display보다 우선 */
+.modal-panel {
+  width: min(1100px, calc(100% - 48px));
+  max-height: calc(100% - 96px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background-color: var(--bg);
+  background-image: var(--paper);
+  border: 1px solid var(--line);
+}
+.modal-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 34px;
+  background-color: var(--bg);
+  border-bottom: 1px dashed var(--line);
+}
+.modal-title { font-weight: 600; }
+.modal-close { font-size: 14px; color: var(--muted); }
+.modal-close:focus:not(:focus-visible) { outline: none; }
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 34px 28px;
+  padding: 34px;
+}
+/* 작업물 자세히 보기 (Discover)
+   흐림 대신: 바깥 테두리 자리에서 시작한 선이 안쪽으로 좁아지며 창이 됨 (도면 느낌)
+   스크롤 없이 한 화면: 왼쪽 이미지 / 오른쪽 정보 두 칸 */
+.modal.is-detail {
+  --m-inset: 0px;
+  display: block;
+  background-color: var(--bg);
+  background-image: var(--paper);
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+}
+.modal.is-detail.is-open { --m-inset: 34px; }
+.modal.is-detail .modal-panel {
+  position: absolute;
+  inset: var(--m-inset);
+  width: auto;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: none;
+  transition: inset 0.7s cubic-bezier(0.65, 0, 0.25, 1) 0.1s;
+}
+/* 여는 순서: ① 종이가 깔림(0.3초) ② 테두리가 좁아짐(0.7초) ③ 이미지가 커지며 등장 ④ 글이 한 줄씩 올라옴
+   닫을 때는 반대로 (is-open이 빠지면 같은 전환이 거꾸로) */
+.modal.is-detail { opacity: 0; transition: opacity 0.3s; }
+.modal.is-detail.is-open { opacity: 1; }
+.modal.is-detail .detail-image { opacity: 0; transform: scale(0.92); transition: opacity 0.35s, transform 0.35s; }
+.modal.is-detail.is-open .detail-image {
+  opacity: 1; transform: none;
+  transition: opacity 0.5s 0.55s, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.55s;
+}
+.modal.is-detail .detail-info > * { opacity: 0; transform: translateY(14px); transition: opacity 0.25s, transform 0.25s; }
+.modal.is-detail.is-open .detail-info > * { opacity: 1; transform: none; transition: opacity 0.45s, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.modal.is-detail.is-open .detail-info > :nth-child(1) { transition-delay: 0.65s; }
+.modal.is-detail.is-open .detail-info > :nth-child(2) { transition-delay: 0.71s; }
+.modal.is-detail.is-open .detail-info > :nth-child(3) { transition-delay: 0.77s; }
+.modal.is-detail.is-open .detail-info > :nth-child(4) { transition-delay: 0.83s; }
+.modal.is-detail.is-open .detail-info > :nth-child(5) { transition-delay: 0.89s; }
+.modal.is-detail.is-open .detail-info > :nth-child(6) { transition-delay: 0.95s; }
+.modal.is-detail.is-open .detail-info > :nth-child(7) { transition-delay: 1.01s; }
+/* 가운데 점선: 위에서 아래로 그어짐 */
+.modal.is-detail .detail-media { border-right: none; position: relative; }
+.modal.is-detail .detail-media::after {
+  content: ""; position: absolute; top: 0; right: 0; width: 1px; height: 100%;
+  background: repeating-linear-gradient(to bottom, var(--line) 0 3px, transparent 3px 6px);
+  transform: scaleY(0); transform-origin: top; transition: transform 0.3s;
+}
+.modal.is-detail.is-open .detail-media::after { transform: none; transition: transform 0.6s cubic-bezier(0.65, 0, 0.25, 1) 0.45s; }
+.modal.is-detail .modal-head { flex: none; background: none; padding: 0 34px; height: 52px; }
+.modal.is-detail .modal-body { flex: 1; min-height: 0; overflow-y: auto; }
+/* 좁아진 테두리 바깥: 위·아래 눈금자 */
+.modal.is-detail::before,
+.modal.is-detail::after {
+  content: "";
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  height: 8px;
+  opacity: 0;
+  transition: opacity 0.3s 0.3s;
+  background: repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 10px);
+}
+.modal.is-detail::before { top: 13px; }
+.modal.is-detail::after  { bottom: 13px; }
+.modal.is-detail.is-open::before,
+.modal.is-detail.is-open::after { opacity: 1; }
+/* 네 모서리 + (테두리와 함께 움직임) */
+.m-plus { display: none; }
+.modal.is-detail .m-plus {
+  display: block;
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  transition: top 0.7s cubic-bezier(0.65, 0, 0.25, 1) 0.1s, left 0.7s cubic-bezier(0.65, 0, 0.25, 1) 0.1s,
+              bottom 0.7s cubic-bezier(0.65, 0, 0.25, 1) 0.1s, right 0.7s cubic-bezier(0.65, 0, 0.25, 1) 0.1s;
+  background:
+    linear-gradient(var(--ink), var(--ink)) center / 1px 11px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) center / 11px 1px no-repeat;
+}
+.m-plus.tl { top: calc(var(--m-inset) - 5px); left: calc(var(--m-inset) - 5px); }
+.m-plus.tr { top: calc(var(--m-inset) - 5px); right: calc(var(--m-inset) - 5px); }
+.m-plus.bl { bottom: calc(var(--m-inset) - 5px); left: calc(var(--m-inset) - 5px); }
+.m-plus.br { bottom: calc(var(--m-inset) - 5px); right: calc(var(--m-inset) - 5px); }
+
+.modal-body { padding: 0; }
+.detail { display: grid; grid-template-columns: 1fr 1fr; height: 100%; }
+.detail-media { display: grid; place-items: center; padding: 34px; border-right: 1px dashed var(--line); }
+/* 칸 높이에 맞춰 최대한 크게 (비율 396:348 유지) */
+.detail-image { position: relative; width: min(100%, (100vh - 220px) * 396 / 348); aspect-ratio: 396 / 348; }
+.detail-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.detail-image .corners { opacity: 1; }
+.detail-info { display: flex; flex-direction: column; justify-content: center; padding: 34px clamp(28px, 4vw, 64px); }
+.detail-title { font-size: clamp(28px, 2.8vw, 48px); line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; }
+.detail-lead { margin-top: 8px; color: var(--muted); }
+.detail-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 20px; margin-top: 24px; padding: 16px 0; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); }
+.detail-facts dt { font-size: 12px; color: var(--muted); }
+.detail-facts dd { margin: 3px 0 0; font-size: 13px; line-height: 1.5; }
+.detail-summary { margin-top: 20px; font-size: 14px; line-height: 1.7; }
+.detail-sub { margin-top: 22px; font-size: 13px; font-weight: 600; }
+.detail-steps { margin-top: 6px; }
+.detail-steps li { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: baseline; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
+.detail-steps b { font-weight: 400; }
+.detail-actions { display: flex; gap: 8px; margin-top: 24px; }
+.detail-actions .action { display: inline-block; }
+/* 영상 재생 창: 화면 높이를 넘지 않는 가장 큰 16:9 */
+.modal-player { display: grid; place-items: center; background: #000; }
+.modal-player iframe { display: block; width: min(100%, (100vh - 190px) * 16 / 9); aspect-ratio: 16 / 9; border: 0; }
+/* 팝업 안 이미지 크게 보기: 가운데에 그림만 크게 */
+.zoom {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+.zoom[hidden] { display: none; }
+.zoom img {
+  width: min(720px, 88%);
+  max-height: 80%;
+  object-fit: contain;
+}
+.modal-grid figure { margin: 0; }
+.modal-sub { grid-column: 1 / -1; padding-top: 8px; font-weight: 600; border-top: 1px dashed var(--line); }
+.modal-sub:first-child { padding-top: 0; border-top: none; }
+.modal-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
+.modal-grid figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
+.modal-grid a { display: block; }
+
+/* =========================================
+   한 문장 화면 (Heron 순서): 눈금 테두리 칸이 올라와 화면을 채움
+   문장은 화면 가운데에 고정(clip-path로 이 섹션 안에서만 보임), 계속 내리면 흐려짐
+   ========================================= */
+.statement {
+  position: relative;
+  height: calc(var(--panel-h) * 3);   /* 화면을 채운 뒤 첫 문장 1화면 + 두 번째 문장 1화면 (마지막에 연락 칸이 아래에 겹쳐 올라옴) */
+  clip-path: inset(0);
+}
+.statement-frame {
+  position: sticky;
+  top: 0;
+  height: var(--panel-h);
+}
+/* 위·아래 눈금자, 양옆 짧은 눈금 */
+.statement-frame::before,
+.statement-frame::after {
+  content: "";
+  position: absolute;
+  left: 36px;
+  right: 36px;
+  height: 8px;
+  background: repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 10px);
+}
+.statement-frame::before { top: 14px; }
+.statement-frame::after  { bottom: 14px; }
+.statement-frame .plus { position: absolute; width: 11px; height: 11px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) center / 1px 11px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) center / 11px 1px no-repeat; }
+.plus.tl { top: 13px; left: 13px; }
+.plus.tr { top: 13px; right: 13px; }
+.plus.bl { bottom: 13px; left: 13px; }
+.plus.br { bottom: 13px; right: 13px; }
+.statement-frame .plus.tl::after,
+.statement-frame .plus.tr::after {
+  content: "";
+  position: absolute;
+  top: 26px;
+  left: 5px;
+  width: 8px;
+  height: calc(var(--panel-h) - 66px);
+  background: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 12px);
+}
+.statement-frame .plus.tr::after { left: auto; right: 5px; }
+
+.statement-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: calc(100vw - 80px);
+  text-align: center;
+  font-size: clamp(28px, 3.4vw, 64px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  /* --dim: 0이면 진한 글자, 1이면 선 색 (script.js가 스크롤에 맞춰 넣음) */
+  color: color-mix(in srgb, var(--line) calc(var(--dim, 0) * 100%), var(--ink));
+  opacity: var(--op, 1);
+}
+.statement-second { --op: 0; }   /* 두 번째 문장: 처음엔 안 보임 (script.js가 스크롤에 맞춰 넣음) */
+
+/* 양옆 진행 표시 */
+.ticks {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+.ticks-left  { left: 17px; align-items: flex-start; }
+.ticks-right { right: 17px; align-items: flex-end; }
+.ticks i { display: block; width: 14px; height: 1px; background: var(--line); }
+.ticks i.is-on { width: 29px; background: var(--accent); }
+
+/* 모바일 작업물 목록 (PC에서는 숨김) */
+.works-mobile { display: none; }
+
+/* =========================================
+   마무리
+   ========================================= */
+/* 한 문장 화면 맨 아래로 올라와 붙음 (2026-11-13). --contact-h = 연락 칸 높이 (script.js가 넣음) */
+.contact {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(-1 * var(--contact-h, 0px));
+  border-top: 1px solid var(--line);
+  background-color: var(--bg);
+  background-image: var(--paper);
+  background-attachment: fixed;   /* 본문 질감과 무늬가 이어지도록 */
+}
+.contact-item { display: flex; flex-direction: column; gap: 8px; font-size: 18px; }
+.contact .label { align-items: center; }
+.footer { border-bottom: none; }
+
+/* =========================================
+   모바일: 칸을 위에서 아래로 쌓는다
+   ========================================= */
+@media (max-width: 768px) {
+  :root { --frame-gap: 8px; --pad: 16px; --header-h: 50px; }
+
+  .row { grid-template-columns: 1fr; }
+  .cell,
+  .full, .span-2, .span-3, .span-4, .span-6, .span-8, .span-10 {
+    grid-column: 1 / -1;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+  .cell:first-child { border-top: none; }
+  .cell:empty { display: none; }          /* PC에서 칸 맞춤용 빈칸은 쌓을 때 숨김 */
+  .skill-top .cell { padding: 32px var(--pad); }
+  .skill-head { padding: 14px var(--pad); }
+  .skill-title { padding: 24px var(--pad); }
+  .statement-second { top: calc(50% - var(--contact-h, 0px) / 2); }   /* 모바일은 연락 칸이 높아서, 남은 위쪽 공간 가운데에 */
+  .modal-panel { width: calc(100% - 24px); max-height: calc(100% - 48px); }
+  .modal-head { padding: 14px var(--pad); }
+  .modal-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 14px; padding: var(--pad); }
+  /* 모바일: 위아래로 쌓고 창 안에서 스크롤 */
+  .modal.is-detail.is-open { --m-inset: 16px; }
+  .modal.is-detail::before, .modal.is-detail::after, .modal.is-detail .detail-media::after { display: none; }
+  .modal.is-detail .detail-media { border-bottom: 1px dashed var(--line); }
+  .modal.is-detail .modal-head { padding: 0 var(--pad); }
+  .detail { grid-template-columns: 1fr; height: auto; }
+  .detail-media { padding: var(--pad); border-right: none; border-bottom: 1px dashed var(--line); }  .detail-image { width: 100%; }
+  .detail-info { padding: var(--pad) var(--pad) 32px; }
+
+  /* 헤더: 로고와 전환 칸을 반반 */
+  .header { grid-template-columns: 1fr 1fr; }
+  .header .logo { padding-inline: var(--pad); }
+  .header .cell { grid-column: auto; border-top: none; }
+  .header .logo { grid-column: 1 / -1; }   /* 이름이 화면 오른쪽 끝까지 가도록 한 줄 전체 */
+
+
+  /* 히어로: 사진을 맨 위로, 나머지는 위아래로 쌓음 (선은 아래 띠 위에만) */
+  .hero-cell { font-size: 16px; padding-top: 28px; }
+  .hero-photo { order: -1; min-height: 70vh; }
+  .profile-photo { height: 100%; }   /* 모바일은 사진 칸이 따로라 원래대로 꽉 채움 */
+  .works-peek { bottom: auto; top: calc(70vh - 76px); }   /* 첫 화면(사진 아래쪽)에서 보이게 */
+  .text-lg { font-size: 18px; }
+
+  .works-track { display: none; }
+  .works-mobile { display: block; padding: 32px var(--pad); }
+  .m-item { margin-top: 36px; }
+  .m-item .tone { aspect-ratio: 4 / 3; height: auto; }
+  .m-title { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; font-weight: 600; }
+  .m-image { position: relative; }
+  .m-image .actions { opacity: 1; pointer-events: auto; bottom: 14px; }   /* 모바일은 항상 보임 */
+}
+
+/* 컴퓨터 설정에서 "동작 줄이기"를 켠 사용자 */
+@media (prefers-reduced-motion: reduce) {
+  .header, .works-strip, .strip-item, .loader-half,
+  .hero-a > *, .hero-c > *, .hero-list li, .profile-photo, .tool-name::before { transition: none !important; }
+  body.hero-set .hero-a > .hero-make { animation: none; border-right-color: transparent; transition: none; }
+  body.hero-set .tear img.tear-strip, body.hero-set .tear-whole { animation: none; opacity: 0; }   /* 처음부터 찢어진 상태 */
+  body.hero-set .tear img:not(.tear-whole) { animation: none; }
+  /* 작업물 보기: 움직이지 않고 그 자리에 계속 보임 */
+  body.hero-set .works-peek { animation: none; transform: none; visibility: visible; }
+  /* 한 문장 화면: 두 문장을 위아래로 함께 보여줌 */
+  #statementText { top: 42%; }
+  .statement-second { --op: 1; top: 58%; }
+  /* 스킬 그림: 스케치는 바로 보이고, 색은 움직임 없이 바뀜 */
+  .skill-art .stroke-sketch { stroke-dashoffset: 0; animation: none !important; }
+  .stroke-color, .skill-grid .cell:hover .stroke-color { transition: none; }
+  .modal.is-detail, .modal.is-detail .modal-panel, .modal.is-detail .m-plus, .modal.is-detail .detail-image,
+  .modal.is-detail .detail-info > *, .modal.is-detail .detail-media::after,
+  .modal.is-detail::before, .modal.is-detail::after { transition: none !important; }
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- 사이트와 같은 미색 종이 + 테두리 선 + 로딩의 주황 네모 커서 -->
+  <rect width="32" height="32" rx="3" fill="#f2f2eb"/>
+  <rect x="3.5" y="3.5" width="25" height="25" fill="none" stroke="#1e1e1c" stroke-width="1.5"/>
+  <rect x="13" y="9" width="6" height="14" fill="#f54600"/>
+</svg>

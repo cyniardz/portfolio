@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>방동훈 포트폴리오</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="web" class="in-hero">
+
+  <!-- 로딩: 두 줄 타이핑(가운데 선이 양쪽으로 그어짐) → 선이 갈라져 히어로 칸의 위·아래 선이 됨 -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <!-- ghost: 완성된 글자 자리를 미리 잡아둠 / typed: 그 자리 왼쪽부터 채워짐 -->
+    <div class="loader-half loader-top">
+      <p class="loader-line"><span class="ghost">방동훈</span><span class="typed"><span id="loaderLine1"></span><i class="caret"></i></span></p>
+    </div>
+    <div class="loader-half loader-bottom">
+      <p class="loader-line"><span class="ghost">Portfolio</span><span class="typed"><span id="loaderLine2"></span><i class="caret"></i></span></p>
+    </div>
+  </div>
+
+  <!-- 고정 테두리: 모든 내용은 이 안에서만 보인다 -->
+  <div class="frame">
+
+    <!-- 웹/영상 전환 때 밀려오는 화면 -->
+
+    <!-- 스킬 작품 팝업: 뒤는 흐리게, 안에 작품을 나열 -->
+    <div class="modal" id="modal" hidden>
+      <!-- 자세히 보기: 좁아진 테두리 네 모서리 + 표시 -->
+      <i class="m-plus tl" aria-hidden="true"></i><i class="m-plus tr" aria-hidden="true"></i>
+      <i class="m-plus bl" aria-hidden="true"></i><i class="m-plus br" aria-hidden="true"></i>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-head">
+          <p class="modal-title" id="modalTitle"></p>
+          <button class="modal-close" id="modalClose" type="button">닫기</button>
+        </div>
+        <div class="modal-grid" id="modalGrid"></div>
+      </div>
+      <!-- 팝업 안 이미지 크게 보기 -->
+      <div class="zoom" id="zoom" hidden>
+        <img src="" alt="">
+      </div>
+    </div>
+
+    <div class="scroll" id="scroll">
+      <div class="scroll-inner">
+
+        <!-- 헤더 -->
+        <header class="row header" id="header">
+          <!-- 로고 옆 Web / Video: 누르면 그 모드로 전환, 현재 모드만 주황 (2026-11-12) -->
+          <div class="cell logo">
+            <a href="#top">Portfolio</a>
+            <span class="mode-switch">
+              <button type="button" data-switch="web">Web</button><span class="meta">/</span><button type="button" data-switch="video">Video</button>
+            </span>
+            <span class="header-name">방동훈</span><!-- 이름은 헤더 오른쪽 끝 (2026-11-15) -->
+          </div>
+        </header>
+
+        <!-- 히어로 (2026-11-12): 칸 선 없이 가운데 사진 → 사진이 나온 뒤 양옆이 가운데서 바깥으로 나옴
+             왼쪽: MAKE WEB(테두리 글자 → 색 채움) + 작업물 세 줄 / 오른쪽: 사용 툴(흑백) + GitHub·Instagram 링크와 QR
+             아래 띠: 이름 | 한 문장 | 작업물 보기 세 칸 -->
+        <section class="hero" id="hero">
+          <div class="hero-cell hero-a">
+            <p class="hero-make"><span class="only-web">MAKE WEB</span><span class="only-video">MAKE VIDEO</span></p>            <ul class="hero-list only-web">
+              <li>브랜드 리뉴얼 사이트</li>
+              <li>팝업 예약 페이지</li>
+              <li>일체형 모바일 페이지</li>
+            </ul>
+            <!-- 영상 모드 목록은 임시 (Claude가 넣음) -->
+            <ul class="hero-list only-video">
+              <li>앱 광고 영상</li>
+              <li>공모전 숏폼</li>
+              <li>정책 홍보 영상</li>
+            </ul>
+          </div>
+          <div class="hero-cell hero-photo">
+            <img class="profile-photo only-web" src="images/hero/profile.webp" alt="방동훈 프로필 사진">
+            <!-- 영상 모드: 흑백 그림이 찢어지며 얼굴 부분만 컬러 사진이 보임
+                 그림(tear-*.webp)은 임시 스케치 필터 버전. 그림풍 사진을 받으면 images/hero/make-tear.py로 다시 만듦 -->
+            <div class="tear only-video">
+              <img class="profile-photo" src="images/hero/profile.webp" alt="방동훈 프로필 사진">
+              <img class="profile-photo" src="images/hero/tear-frame.webp" alt="">
+              <img class="profile-photo tear-strip" src="images/hero/tear-strip.webp" alt="">
+              <img class="profile-photo tear-whole" src="images/hero/profile-sketch.webp" alt=""><!-- 찢기기 전 온전한 그림 -->
+            </div>
+          </div>
+          <div class="hero-cell hero-c">
+            <div class="hero-tools">
+              <!-- 흑백 로고 + 이름. 모드마다 그 일에 쓰는 도구만 (only-web / only-video). 로고가 없는 도구(Dreamina)는 이름만 -->
+              <ul class="tool-logos">
+                <li class="only-web"><img src="images/logos/visualstudiocode.svg" alt=""><span class="tool-name">VS Code</span></li>
+                <li class="only-web"><img src="images/logos/claude.svg" alt=""><span class="tool-name">Claude</span></li>
+                <li class="only-web"><img src="images/logos/openai.svg" alt=""><span class="tool-name">ChatGPT</span></li>
+                <li class="only-web"><img src="images/logos/googlegemini.svg" alt=""><span class="tool-name">Gemini</span></li>
+                <li class="only-web"><img src="images/logos/figma.svg" alt=""><span class="tool-name">Figma</span></li>
+                <li class="only-web"><img src="images/logos/html5.svg" alt=""><span class="tool-name">HTML</span></li>
+                <li class="only-web"><img src="images/logos/css3.svg" alt=""><span class="tool-name">CSS</span></li>
+                <li class="only-web"><img src="images/logos/javascript.svg" alt=""><span class="tool-name">JavaScript</span></li>
+                <li class="only-web"><img src="images/logos/react.svg" alt=""><span class="tool-name">React</span></li>
+                <li class="only-web"><img src="images/logos/vite.svg" alt=""><span class="tool-name">Vite</span></li>
+                <li class="only-web"><img src="images/logos/vercel.svg" alt=""><span class="tool-name">Vercel</span></li>
+                <li class="only-video"><img src="images/logos/adobepremierepro.svg" alt=""><span class="tool-name">Premiere Pro</span></li>
+                <li class="only-video"><img src="images/logos/adobeaftereffects.svg" alt=""><span class="tool-name">After Effects</span></li>
+                <li class="only-video"><img src="images/logos/cinema4d.svg" alt=""><span class="tool-name">Cinema 4D</span></li>
+                <li class="only-video"><img src="images/logos/adobephotoshop.svg" alt=""><span class="tool-name">Photoshop</span></li>
+                <li class="only-video"><img src="images/logos/adobeillustrator.svg" alt=""><span class="tool-name">Illustrator</span></li>
+                <li class="only-video"><img src="images/logos/google.svg" alt=""><span class="tool-name">Google Flow</span></li>
+                <li class="only-video"><span class="tool-noicon" aria-hidden="true">D</span><span class="tool-name">Dreamina</span></li>
+              </ul>
+              <!-- 툴과 같은 격자: Instagram은 Cinema 4D 밑. 누르면 해당 페이지로 (GitHub는 2026-11-12에 뺌) -->
+              <ul class="tool-logos hero-links">
+                <li><a href="https://www.instagram.com/_osoneos/" target="_blank" rel="noopener"><img src="images/logos/instagram.svg" alt=""><span class="tool-name">Instagram</span></a></li>
+              </ul>
+            </div>
+            <!-- QR 코드: 오른쪽 칸 아래쪽, 오른쪽 정렬 -->
+            <div class="hero-qr">
+              <figure><img src="images/qr/instagram.svg" alt="Instagram 주소 QR 코드"><figcaption>Instagram</figcaption></figure>
+            </div>
+          </div>
+          <!-- 작업물 보기: 히어로 연출이 끝나면 오른쪽에서 잠깐 밀려 나왔다가 들어감 -->
+          <a class="works-peek" href="#works">작업물 보기 →</a>
+        </section>
+
+        <!-- 작업물 -->
+        <section class="works" id="works">
+
+          <!-- PC: 화면 고정 스크롤 -->
+          <div class="works-track" id="worksTrack">
+            <div class="works-sticky">
+              <div class="works-stage">
+                <div class="works-list">
+                  <p class="works-mode meta"><span><span class="only-web">Web</span><span class="only-video">Video</span></span><span>Duration</span></p>
+                  <ol id="worksList"></ol>
+                </div>
+                <div class="works-image">
+                  <div class="strip-view"><div class="works-strip" id="worksStrip"></div></div>
+                </div>
+                <div class="works-desc">
+                  <!-- ghost: 완성 문장 자리를 잡아둠 / live: 문자가 돌아가다가 완성됨 -->
+                  <p class="text scramble" id="worksSummary"><span class="ghost"></span><span class="live"></span></p>
+                </div>
+              </div>
+              <div class="ticks ticks-left" id="ticksLeft" aria-hidden="true"></div>
+              <div class="ticks ticks-right" id="ticksRight" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- 모바일: 차례대로 쌓기 -->
+          <div class="works-mobile">
+            <p class="works-mode meta"><span><span class="only-web">Web</span><span class="only-video">Video</span></span><span>Duration</span></p>
+            <div id="worksMobile"></div>
+          </div>
+        </section>
+
+        <!-- 스킬 -->
+        <section class="skill" id="skill">
+          <!-- 위: 큰 제목 + 짧은 설명 (Heron 구성) -->
+          <div class="row skill-top">
+            <div class="cell full"><h2 class="skill-heading">Skill</h2><p class="skill-lead">하는 일과 쓰는 도구들</p></div>
+          </div>
+          <!-- 분야별 4칸: 분야·번호 / 선 그림 / 도구 / 할 수 있는 일 (Heron 칸 구성) -->
+          <div class="row skill-grid">
+            <div class="cell span-3" data-skill="video">
+              <p class="skill-head"><span>영상편집</span></p>
+              <div class="skill-art" role="button" tabindex="0" aria-label="영상편집 하이라이트 재생">
+                <svg class="art" viewBox="0 0 800 600">
+                  <defs>
+                    <mask id="sk-video" maskUnits="userSpaceOnUse"><path class="stroke stroke-sketch" d="M-60 20 L860 80 L-60 140 L860 200 L-60 260 L860 320 L-60 380 L860 440 L-60 500 L860 560 L-60 620" pathLength="1"/></mask>
+                    <mask id="co-video" maskUnits="userSpaceOnUse"><path class="stroke stroke-color" d="M860 20 L-60 80 L860 140 L-60 200 L860 260 L-60 320 L860 380 L-60 440 L860 500 L-60 560 L860 620" pathLength="1"/></mask>
+                  </defs>
+                  <!-- 영상편집 그림 = Premiere Pro 아이콘: 선 스케치 → 올리면 원래 색 (2026-11-12) -->
+                  <image href="images/skill/premiere-sketch.svg" x="290" y="190" width="220" height="220" mask="url(#sk-video)"/>
+                  <image href="images/skill/premiere-color.svg" x="290" y="190" width="220" height="220" mask="url(#co-video)"/>
+                </svg>
+              </div>
+              <p class="skill-title">Premiere Pro<br>After Effects<br>Cinema 4D <span class="meta">기초</span><br>Google Flow<br>Dreamina</p>
+            </div>
+            <div class="cell span-3" data-skill="design">
+              <p class="skill-head"><span>디자인</span></p>
+              <div class="skill-art" role="button" tabindex="0" aria-label="디자인 작품 보기">
+                <svg class="art" viewBox="0 0 800 600">
+                  <defs>
+                    <mask id="sk-design" maskUnits="userSpaceOnUse"><path class="stroke stroke-sketch" d="M-60 20 L860 80 L-60 140 L860 200 L-60 260 L860 320 L-60 380 L860 440 L-60 500 L860 560 L-60 620" pathLength="1"/></mask>
+                    <mask id="co-design" maskUnits="userSpaceOnUse"><path class="stroke stroke-color" d="M860 20 L-60 80 L860 140 L-60 200 L860 260 L-60 320 L860 380 L-60 440 L860 500 L-60 560 L860 620" pathLength="1"/></mask>
+                  </defs>
+                  <image href="images/skill/design-sketch.webp" width="800" height="600" mask="url(#sk-design)"/>
+                  <image href="images/skill/design-color.webp" width="800" height="600" mask="url(#co-design)"/>
+                </svg>
+              </div>
+              <p class="skill-title">Photoshop<br>Illustrator</p>
+            </div>
+            <div class="cell span-3" data-skill-static="web">
+              <p class="skill-head"><span>바이브 코딩</span></p>
+              <div class="skill-art" aria-hidden="true">
+                <svg class="art" viewBox="0 0 800 600">
+                  <defs>
+                    <mask id="sk-web" maskUnits="userSpaceOnUse"><path class="stroke stroke-sketch" d="M-60 20 L860 80 L-60 140 L860 200 L-60 260 L860 320 L-60 380 L860 440 L-60 500 L860 560 L-60 620" pathLength="1"/></mask>
+                    <mask id="co-web" maskUnits="userSpaceOnUse"><path class="stroke stroke-color" d="M860 20 L-60 80 L860 140 L-60 200 L860 260 L-60 320 L860 380 L-60 440 L860 500 L-60 560 L860 620" pathLength="1"/></mask>
+                  </defs>
+                  <image href="images/skill/web-sketch.webp" width="800" height="600" mask="url(#sk-web)"/>
+                  <image href="images/skill/web-color.webp" width="800" height="600" mask="url(#co-web)"/>
+                </svg>
+              </div>
+              <p class="skill-title">VS Code<br>Claude<br>ChatGPT<br>Gemini<br>Figma</p><!-- 그림: 위 VS Code·Claude·ChatGPT / 아래 Gemini·Figma -->
+            </div>
+            <div class="cell span-3"><!-- 누르는 기능 없음 (2026-11-15, 바이브 코딩 칸처럼) -->
+              <p class="skill-head"><span>기획·운영</span></p>
+              <div class="skill-art" aria-hidden="true">
+                <svg class="art" viewBox="0 0 800 600">
+                  <defs>
+                    <mask id="sk-content" maskUnits="userSpaceOnUse"><path class="stroke stroke-sketch" d="M-60 20 L860 80 L-60 140 L860 200 L-60 260 L860 320 L-60 380 L860 440 L-60 500 L860 560 L-60 620" pathLength="1"/></mask>
+                    <mask id="co-content" maskUnits="userSpaceOnUse"><path class="stroke stroke-color" d="M860 20 L-60 80 L860 140 L-60 200 L860 260 L-60 320 L860 380 L-60 440 L860 500 L-60 560 L860 620" pathLength="1"/></mask>
+                  </defs>
+                  <image href="images/skill/content-sketch.webp" width="800" height="600" mask="url(#sk-content)"/>
+                  <image href="images/skill/content-color.webp" width="800" height="600" mask="url(#co-content)"/>
+                </svg>
+              </div>
+              <p class="skill-title">기획안·콘티<br>인스타그램<br>리틀리</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 소개 -->
+        <section class="about" id="about">
+          <div class="row">
+            <div class="cell span-2 label">소개</div>
+            <div class="cell span-10">
+              <!-- 히어로 아래 띠에 있던 문장을 옮겨옴 (문장은 Claude 추천, 확정 아님) -->
+              <p class="text-lg about-intro"><strong>방동훈</strong>기획부터 디자인, 퍼블리싱까지 직접 하며 웹을 만들고 영상을 편집합니다</p>
+            </div>
+          </div>
+          <!-- 완료일 순서 (2026-11-13). 날짜 = 완료일, 기간 = 주말 뺀 작업일. 작품 사이에 쉬는 텀을 두고 Claude가 배치 (내가 준 완료일은 그대로) -->
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.04.01</div>
+            <div class="cell span-6">시민안전 공모전 숏폼</div>
+            <div class="cell span-4 meta">Video, 10 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.04.09</div>
+            <div class="cell span-6">장애인 학대예방 숏츠</div>
+            <div class="cell span-4 meta">Video, 4 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.04.23</div>
+            <div class="cell span-6">유튜브 29초 영화제 편집</div>
+            <div class="cell span-4 meta">Video, 9 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.04.24</div>
+            <div class="cell span-6">BERMUDA TRIANGLE</div>
+            <div class="cell span-4 meta">Video, 1 day</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.05.07</div>
+            <div class="cell span-6">투니버스</div>
+            <div class="cell span-4 meta">Video, 9 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.05.19</div>
+            <div class="cell span-6">런치패드 광고 PURPLE</div>
+            <div class="cell span-4 meta">Video, 8 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.06.02</div>
+            <div class="cell span-6">콘텐츠산업 진흥정책 홍보 영상</div>
+            <div class="cell span-4 meta">Video, 6 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.06.23</div>
+            <div class="cell span-6">SIGNAL 앱 광고 영상</div>
+            <div class="cell span-4 meta">Video, 10 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.07.03</div>
+            <div class="cell span-6">워킹데드</div>
+            <div class="cell span-4 meta">Video, 7 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.07.17</div>
+            <div class="cell span-6">미래 철도 AI</div>
+            <div class="cell span-4 meta">Video, 9 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.10.22</div>
+            <div class="cell span-6">김밥천국 레드 리뉴얼 페이지</div>
+            <div class="cell span-4 meta">Web, 17 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.11.06</div>
+            <div class="cell span-6">Random Book 팝업 예약 페이지</div>
+            <div class="cell span-4 meta">Web, 4 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.11.06</div>
+            <div class="cell span-6">한살림 임산부 꾸러미 일체형 페이지</div>
+            <div class="cell span-4 meta">Web, 2 days</div>
+          </div>
+          <div class="row timeline">
+            <div class="cell span-2 meta">2026.11.09</div>
+            <div class="cell span-6">momo 쇼핑몰 일체형 페이지</div>
+            <div class="cell span-4 meta">Web, 2 days</div>
+          </div>
+        </section>
+
+        <!-- 한 문장 화면: 테두리 눈금 칸이 올라와 화면을 채우고, 문장은 화면 가운데 고정 → 첫 문장이 흐려지며 사라짐 → 두 번째 문장이 나와서 그대로 남음 → 연락 칸이 아래서 올라와 화면 맨 아래에 붙음 -->
+        <section class="statement" id="statement">
+          <div class="statement-frame" aria-hidden="true">
+            <i class="plus tl"></i><i class="plus tr"></i><i class="plus bl"></i><i class="plus br"></i>
+          </div>
+          <p class="statement-text" id="statementText">생각한 걸 끝까지 만들어내는 사람</p>
+          <p class="statement-text statement-second" id="statementText2">함께 만들 다음을 기대합니다</p>
+        </section>
+
+        <!-- 마무리 -->
+        <section class="contact" id="contact">
+          <div class="row">
+            <div class="cell span-2 label">연락</div>
+            <!-- 연락 방법별로 칸을 나눔: 이름(작게) + 값 (2026-11-13) -->
+            <div class="cell span-4 contact-item">
+              <span class="meta">이메일</span>
+              <a href="mailto:cyniardz@gmail.com">cyniardz@gmail.com</a>
+            </div>
+            <div class="cell span-6 contact-item">
+              <span class="meta">인스타그램 DM</span>
+              <a href="https://www.instagram.com/_osoneos/" target="_blank" rel="noopener">@_osoneos</a>
+            </div>
+          </div>
+          <div class="row footer">
+            <div class="cell full meta">© 2026 방동훈</div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

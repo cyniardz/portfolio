@@ -1,0 +1,16 @@
+# 다른 사이트 화면 캡처(레퍼런스)와 원본 PDF는 공개 저장소에 올리지 않는다
+docs/references/*.png
+docs/video-portfolio.pdf
+
+# 비밀값
+.env
+.env.*
+
+# 작업용 폴더·파일 (배포에 필요 없음)
+영상포폴/
+.playwright-mcp/
+graphify-out/
+_logos.html
+개인 포폴에 적을 내용.txt
+images/hero/흑백이미지.png
+__pycache__/
