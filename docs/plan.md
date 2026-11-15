@@ -389,7 +389,7 @@
 ## 배포 (2026-11-15)
 
 - GitHub: https://github.com/cyniardz/portfolio (공개). Vercel이 main에 올릴 때마다 자동 배포
-- 주소: https://portfolio-kappa-blush-qjbykox6ig.vercel.app (`portfolio` 이름은 이미 쓰여서 Vercel이 뒤에 글자를 붙임. 바꾸려면 Vercel 설정 Domains에서)
+- 주소: **https://donghoon-portfolio.vercel.app** (내가 정함. Vercel 프로젝트 이름은 portfolio 그대로, 주소만 추가. 처음 자동 주소 portfolio-kappa-blush-qjbykox6ig.vercel.app 도 계속 작동)
 - 올리지 않는 것(`.gitignore`): 영상포폴/, .playwright-mcp/, graphify-out/, 메모 txt, _logos.html, 쓰지 않는 원본 사진, 레퍼런스 캡처
 - 파비콘: `favicon.svg`(미색 바탕 + 검은 테두리 + 주황 네모 커서), 아이폰용 `images/apple-touch-icon.png`
 - 웹 작업물 [Discover] 창에 **[GitHub] 버튼** 추가 (projects.json `githubUrl`, 웹 4개만)
