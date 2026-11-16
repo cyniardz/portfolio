@@ -370,13 +370,12 @@ body.hero-set .hero-list li:nth-child(3) { transition-delay: 3.6s; }
 .tool-logos li:hover .tool-name::before { transform: scaleX(1); }
 /* 로고는 두 모드 모두 흑백 (2026-11-12: 컬러가 찢긴 얼굴과 시선을 다퉈서). 웹은 검게, 영상은 그림과 같은 연필 회색
    로고 파일 자체에는 브랜드 색이 들어 있음 → 나중에 컬러로 되돌리려면 filter만 지우면 됨 */
-.tool-logos img, .tool-noicon { display: block; width: 26px; height: 26px; filter: brightness(0); opacity: 0.8; }
-body[data-mode="video"] .tool-logos img, body[data-mode="video"] .tool-noicon { opacity: 0.55; }
+.tool-logos img { display: block; width: 26px; height: 26px; filter: brightness(0); opacity: 0.8; }
+body[data-mode="video"] .tool-logos img { opacity: 0.55; }
 /* 영상 모드 붓질: 주황 대신 먹색 */
 body[data-mode="video"] .tool-name::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 20 4, 45 7, 70 4 S 96 5, 98 9 C 99 14, 96 18, 97 22 C 80 27, 55 24, 32 27 S 6 26, 2 22 C 4 18, 1 14, 3 9 Z' fill='%231E1E1E' fill-opacity='0.2'/%3E%3C/svg%3E");
 }
-.tool-noicon { display: grid; place-items: center; border: 1.5px solid var(--ink); border-radius: 6px; font-size: 14px; font-weight: 700; color: var(--ink); }
 /* GitHub·Instagram: 툴 격자와 같은 칸·간격으로 바로 아래 줄에 (흑백 처리 없이 원래 검은 아이콘) */
 .hero-links { margin-top: 22px; }
 .hero-links img { opacity: 1; }

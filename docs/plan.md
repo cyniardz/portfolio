@@ -145,7 +145,7 @@
     - 아래 띠: 컨테이너에 맞추지 않고 화면 폭을 세 칸(1 : 2 : 1)으로 나눔 — 방동훈 | 웹을 만들고 영상을 편집합니다 | 작업물 보기 →(오른쪽 끝)
     - 이전 양옆 문단 글(하나의 결과물을… / 만든 것: … / 쓰는 것: …)은 뺌
     - (같은 날 세 번째) 양옆 칸을 사진에서 띄움(칸 안쪽 여백 6vw, 글이 사진 위에 오게 함). 왼쪽 목록 번호 1·2·3 없앰, 목록은 MAKE WEB 밑으로 한 줄씩 내려오며 나타남
-    - 오른쪽 재구성: 사용 툴 18개(VS Code, Claude, ChatGPT, Gemini, Figma, HTML, CSS, JavaScript, React, Vite, Vercel, Photoshop, Illustrator, Premiere Pro, After Effects, Cinema 4D, Google Flow, Dreamina)를 흑백 로고 + 이름 격자로 → 그 아래 GitHub·Instagram **아이콘만**(누르면 이동) → QR 코드는 오른쪽 칸 아래쪽 오른편
+    - 오른쪽 재구성: 사용 툴 17개(VS Code, Claude, ChatGPT, Gemini, Figma, HTML, CSS, JavaScript, React, Vite, Vercel, Photoshop, Illustrator, Premiere Pro, After Effects, Cinema 4D, Google Flow)를 흑백 로고 + 이름 격자로 → 그 아래 GitHub·Instagram **아이콘만**(누르면 이동) → QR 코드는 오른쪽 칸 아래쪽 오른편
     - (같은 날 네 번째, 내 스케치 기준) MAKE WEB 크게(화면 폭의 5.5vw, 최대 112px), 그 아래 세 줄도 크게·넓은 간격으로 위에서 내려오며 나타남. 오른쪽 "사용 툴" 안내글 없앰, 툴 묶음을 더 오른쪽으로, 아이콘과 이름 가운데 정렬. QR 둘 사이 간격 56px, QR은 배경 없이 무늬만(둘레는 비워 둠)
     - 아래 띠: 이름과 문장을 한 칸에 같은 글씨체로("방동훈 기획부터 디자인, 퍼블리싱까지 직접 하며 웹을 만들고 영상을 편집합니다" — 문장은 Claude 추천, 확정 아님), "작업물 보기 →"만 오른쪽 좁은 칸
     - (같은 날 다섯 번째) 인스타그램 주소 연결 https://www.instagram.com/_osoneos/ (히어로 아이콘·QR, 스킬 칸 링크, 연락 링크). 툴 묶음 윗선을 MAKE WEB 윗선에 맞춤
@@ -158,7 +158,7 @@
       - 그림 (2026-11-12 교체): ChatGPT로 만든 흑연 초상화(원본 `Downloads/흑연으로 그린 무심한 초상 자세hi.png`)를 사진에 맞춰 87%로 줄이고 아래로 8px 옮겨 겹침 → `images/hero/profile-sketch.webp`. 배경은 사진 윤곽대로 지움
       - (이전, 임시) 사진에 스케치 필터를 씌운 것. 그림풍 사진을 받으면 같은 이름으로 바꾸고 `images/hero/make-tear.py` 실행 → `tear-frame.webp`·`tear-strip.webp`가 새로 만들어짐 (얼굴 위치·크기가 지금 사진과 같아야 함)
       - 툴 아이콘 (같은 날 다시 정함): **두 모드 모두 흑백** — 웹은 검게, 영상은 연필 회색(옅게). 컬러 아이콘은 찢긴 얼굴과 시선을 다퉈서 뺌 (로고 SVG 파일에는 브랜드 색이 남아 있음). 툴 이름 붓질은 영상은 주황 대신 먹색
-      - **모드별 도구만**: 웹 = VS Code·Claude·ChatGPT·Gemini·Figma·HTML·CSS·JavaScript·React·Vite·Vercel (11) / 영상 = Premiere Pro·After Effects·Cinema 4D·Photoshop·Illustrator·Google Flow·Dreamina (7). Instagram은 두 모드 공통
+      - **모드별 도구만**: 웹 = VS Code·Claude·ChatGPT·Gemini·Figma·HTML·CSS·JavaScript·React·Vite·Vercel (11) / 영상 = Premiere Pro·After Effects·Cinema 4D·Photoshop·Illustrator·Google Flow (6). Instagram은 두 모드 공통
       - 히어로 배경에 큰 직함 글씨(Web Designer 등)는 넣지 않기로 (이미 요소가 많고 흔한 템플릿 처리라서)
       - (2026-11-13, 해 보고 되돌림) ChatGPT 그림(`Downloads/초록 종이 조각으로 가려진 연필 초상화.png`)의 찢긴 종이 가장자리만 떼어 합쳐 봄 → 그림 크기가 처음부터 안 맞아(83%로 줄여 겹침) 맞추는 과정에서 그림이 어긋나 보여서 **원래(코드로 그린 비스듬한 찢김)로 되돌림**. ChatGPT에 다시 요청할 예정
       - (2026-11-13, 해 보고 되돌림) 배경까지 같이 찢기 → 찢긴 끝에 돌돌 말린 종이(오른쪽→왼쪽, 왼쪽→오른쪽 둘 다)를 해 봤으나 **이날 아침 상태(위 "찢김" 설명 그대로)로 되돌림**
@@ -173,7 +173,7 @@
       - "작업물 보기 →": 히어로 연출이 끝난 뒤(약 4.4초) 오른쪽 끝에서 네모 창이 밀려 나와 약 5초 머물다 다시 들어감. 마우스를 올리면 멈춤. PC는 QR 바로 위, 모바일은 사진 아래쪽. 동작 줄이기 설정에서는 계속 보임
       - 툴 이름에 마우스를 올리면 글자 뒤에 옅은 주황 붓질이 왼쪽부터 칠해짐 (글자는 그대로 보임, 마우스 모양 그대로, 누르는 기능 없음 — "호버 피하기"의 예외로 내가 정함)
       - MAKE WEB 색 채움 방향: 오른쪽(B)에서 왼쪽(M)으로. 그 아래 세 줄은 바로 위 줄 자리에서 한 단계씩 내려옴 (MAKE WEB → 첫 줄 → 둘째 줄 → 셋째 줄)
-      - HTML·CSS·JavaScript·React·Vite·Vercel은 Claude가 작업물에서 쓴 도구라 추가함. Google Flow는 Google 로고, Dreamina는 로고가 없어 "D" 글자 상자로 대신함 (임시)
+      - HTML·CSS·JavaScript·React·Vite·Vercel은 Claude가 작업물에서 쓴 도구라 추가함. Google Flow는 Google 로고. **(2026-11-16, 내가 정함) Dreamina는 쓰지 않아 툴 목록·스킬·시민안전 숏폼 도구에서 뺌**
   - (2026-11-12 첫 번째 변경, 내가 그린 스크린샷 기준): 히어로 안의 선과 주황 꺾쇠를 모두 없앰. 남는 선은 헤더 아래 선과 아래 띠의 윗선뿐. 히어로가 보이는 동안은 **바깥 고정 테두리의 양옆 선도 숨김**(`body.in-hero`, 스크롤이 히어로를 지나면 다시 보임)
     - 가운데 사진(396px)은 윗줄에만 있고 아래 띠로 내려오지 않음. 아래 띠는 화면 폭 전체(큰 문장 + 이름은 왼쪽 글과 같은 자리에서 시작, 작업물 보기는 오른쪽)
     - 양옆 글은 로딩이 열리면 **가운데에서 바깥쪽으로 밀려 나오며** 나타남(0.7초). "동작 줄이기"에서는 움직임 없음
@@ -246,6 +246,7 @@
 - **설명 문자 효과**: 작업물이 바뀔 때마다 영문·숫자·기호가 마구 바뀌다가 왼쪽부터 한글 문장으로 완성(약 0.9초). 돌아가는 글자 색은 조금 어두운 주황 `--accent-text` (2026-11-11, 밝은 주황이 너무 진해 보여서 바꿈)
 - **[Discover] → 자세히 보기 팝업 (2026-11-10, 아래 이미지 위 버튼 설명을 대체)**: 현재 이미지에 마우스를 올리면 [Discover] 하나만 나옴(모바일은 항상). 누르면 흐림 대신 **바깥 테두리 자리에서 선이 안쪽으로 좁아지며 창이 됨**. 순서: 종이가 깔림(0.3초) → 테두리가 좁아짐(0.7초, 네 모서리 +, 바깥 위·아래 눈금자) → 가운데 점선이 위에서 아래로 그어지고 이미지가 커지며 등장 → 글이 한 줄씩 올라옴. 전체 약 1.5초. 스크롤 없이 한 화면: 왼쪽 꺾쇠 달린 큰 이미지 / 오른쪽 제목 → 한 줄 소개 → 4칸 정보(기간·역할·도구·형태) → 설명 → 작업 과정(단계·날짜) → [Web/Video][Process] 버튼. 닫으면 테두리가 다시 넓어진 뒤 사라짐. 모바일은 위아래로 쌓고 창 안에서 스크롤 (2026-11-10)
   - 데이터: `projects.json`에 headline, facts, steps 추가. **웹 4개는 README·기획서로 쓴 초안, 영상 4개는 PDF 기준 초안. "확인 필요"로 적힌 기간 비어 있음**
+  - (2026-11-16, 내가 정함) 도구 수정: BERMUDA TRIANGLE = Premiere Pro, After Effects / 시민안전 숏폼 = Google Flow, Premiere Pro / momo 쇼핑몰 = Figma, VS Code, HTML·CSS·JS
 - (이전) **이미지 위 버튼**: 현재 이미지에 마우스를 올리면 아래쪽 가운데에 주황 네모 두 개 [Web][Process] (영상 쪽은 [Video][Process]). 이미지 위에서는 마우스 모양 그대로, 버튼에 올리면 손가락 모양 + 색이 조금 진해짐
   - 이전 규칙의 "호버 색 변경 피하기"와 다르지만 레퍼런스를 보고 직접 정한 것
 - 모바일: 화면 고정 없이 이미지(버튼 항상 보임) → 제목·기간 → 설명 순서로 쌓음
@@ -300,7 +301,7 @@
 - **그림을 누르면** 팝업 ("작품 보기" 글자는 없앰, 누르는 범위는 그림만. 키보드 Enter로도 열림): 뒤는 어둡게 하지 않고 살짝만 흐려지고(2026-11-11, 바깥 테두리 밖 종이색과 대비가 커서 바꿈) 창 안에 작품 나열. 바깥 누르기·Esc·닫기로 닫음
   - 영상: Cinema 4D 런치패드, 3D 그래픽 / 디자인: 카드뉴스, 유튜브 썸네일, 런치패드, 펜, 소품(검·몽둥이·석궁·리볼버) / 웹: 웹 작업물 4개
   - 쓰지 않기로 한 일러스트: `만든 캐릭터` 폴더 전체, 병원, 소파 위 인물
-  - 영상: Premiere Pro, After Effects, Cinema 4D(기초), Google Flow, Dreamina
+  - 영상: Premiere Pro, After Effects, Cinema 4D(기초), Google Flow
   - 디자인: Photoshop, Illustrator, Figma
   - 웹: VS Code, Claude, ChatGPT, Gemini (AI 도구로 바이브코딩)
   - 콘텐츠 운영: 인스타그램(배우는 과정 기록, 게시물 5개 정도로 시작 단계), 리틀리(댓글 자동 DM)
