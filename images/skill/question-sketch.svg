@@ -1,0 +1,14 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 기획·운영 스케치: 연필 선 물음표 (굵은 획의 바깥선만) -->
+  <defs>
+    <mask id="hole" maskUnits="userSpaceOnUse">
+      <rect width="800" height="600" fill="#fff"/>
+      <path d="M335 215 C335 160 372 130 410 130 C452 130 478 160 474 198 C470 238 424 252 410 290 L406 335" fill="none" stroke="#000" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="406" cy="400" r="17" fill="#000"/>
+    </mask>
+  </defs>
+  <g mask="url(#hole)" fill="#2b2b2b">
+    <path d="M335 215 C335 160 372 130 410 130 C452 130 478 160 474 198 C470 238 424 252 410 290 L406 335" fill="none" stroke="#2b2b2b" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="406" cy="400" r="20"/>
+  </g>
+</svg>

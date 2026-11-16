@@ -14,7 +14,7 @@
 - 헤더: 왼쪽 "Portfolio Web / Video", **오른쪽 끝에 이름 "방동훈"**
 - 히어로: MAKE WEB 밑에 이름 넣기를 해 보고 되돌림 (지금은 MAKE WEB → 세 줄)
 - 로딩: **스크롤하면 바로 건너뛰고 히어로가 나옴**
-- 작업물 목록 이름 = 작업물 이름 (김밥천국 레드 / Random Book / 한살림 꾸러미 / momo 쇼핑몰 / SIGNAL 광고 / … / BERMUDA TRIANGLE)
+- 작업물 목록 이름 = 작업물 이름 (김밥천국 레드 / Random Book / 한살림 꾸러미 / momo 쇼핑몰 / SiGNAL 광고 / … / BERMUDA TRIANGLE)
 - 웹 작업물 [Discover] 창에 **[GitHub] 버튼** (4개 모두 저장소 확인함)
 - 스킬 "기획·운영" 칸: 눌러도 창이 안 뜸 (바이브 코딩 칸처럼)
 - 연락: 전화 칸 없앰 → 이메일 / 인스타그램 DM

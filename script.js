@@ -111,6 +111,19 @@ scroller.addEventListener('scroll', () => {
   }
 });
 
+// 헤더 Portfolio → 페이지를 다시 열어 오프닝(로딩)부터 / 맨 위로 버튼 → 히어로로 스크롤만
+function restart() { location.href = location.pathname + location.search; }   // #주소를 떼고 다시 열기
+document.getElementById('toTop').addEventListener('click', () => scrollToY(0));
+
+// 모바일 툴 접기·펼치기
+const toolsToggle = document.querySelector('.tools-toggle');
+toolsToggle.addEventListener('click', () => {
+  const open = toolsToggle.getAttribute('aria-expanded') !== 'true';
+  toolsToggle.setAttribute('aria-expanded', open);
+  toolsToggle.querySelector('.tools-sign').textContent = open ? '−' : '+';
+  document.getElementById('heroTools').classList.toggle('is-open', open);
+});
+
 // 원하는 위치로 이동 (immediate: 바로 이동)
 function scrollToY(y, immediate = false) {
   y = Math.max(0, Math.min(maxScroll(), y));
@@ -138,7 +151,8 @@ document.addEventListener('click', (e) => {
   const id = link.getAttribute('href').slice(1);
   if (!id) return;
   e.preventDefault();
-  const y = id === 'top' ? 0 : topOf(document.getElementById(id));
+  if (id === 'top') { restart(); return; }
+  const y = topOf(document.getElementById(id));
   scrollToY(y);
 });
 
@@ -161,6 +175,8 @@ function onHeaderScroll() {
 
   // 히어로가 보이는 동안은 바깥 테두리 양옆 선을 숨김 (style.css)
   document.body.classList.toggle('in-hero', y < hero.offsetHeight);
+  // 연락 칸이 화면에 들어오면 맨 위로 버튼을 그 위(한 문장 화면 오른쪽 아래)로 올림 (style.css)
+  document.body.classList.toggle('at-end', y + scroller.clientHeight > topOf(document.getElementById('contact')) + 1);
 
   clearTimeout(idleTimer);
 
@@ -226,7 +242,7 @@ function renderWorks() {
   listEl.innerHTML = list.map((p, i) => `
     <li data-index="${i}">
       <button type="button">
-        <span>${p.listTitle || p.title}</span>
+        <span${/^[가-힣]/.test(p.listTitle || p.title) ? ' class="ko"' : ''}>${p.listTitle || p.title}</span>
         <span class="meta">${durationEn(p.duration)}</span>
       </button>
     </li>`).join('');
@@ -236,9 +252,10 @@ function renderWorks() {
     ? `<img class="tone" src="${p.image}" alt="${p.title}" loading="lazy">`
     : `<div class="tone">${label}</div>`;
 
-  // 이미지 위 버튼은 [Discover] 하나. 누르면 자세히 보기 팝업 ([Web][Process]는 팝업 안에)
+  // 이미지 위 [More] 버튼 또는 이미지 아무 데나 누르면 자세히 보기 팝업 ([Web][Process]는 팝업 안에)
   const actions = (i) => `
-    <div class="actions"><button class="action discover" type="button" data-index="${i}">[Discover]</button></div>`;
+    <button class="open-work open-cover" type="button" data-index="${i}" tabindex="-1" aria-hidden="true"></button>
+    <div class="actions"><button class="action open-work" type="button" data-index="${i}">[More]</button></div>`;
 
   // 맨 위에 빈 칸을 하나 두어, 첫 작업물도 가운데에 오게 함 (2026-11-12: 마지막 작업물 그림은 넣지 않음)
   const ghost = list.length > 1 ? '<div class="strip-ghost" aria-hidden="true"></div>' : '';
@@ -364,11 +381,10 @@ listEl.addEventListener('click', (e) => {
 
 
 // =========================================
-// 4. 웹 / 영상 전환 — 로딩 종이가 가운데로 닫혔다가 다시 열림
+// 4. 작업물 Web / Video 탭 (2026-11-16: 헤더 전환을 없애고 작업물 머리글로 옮김. 히어로는 그대로, 목록만 바뀜)
 // =========================================
-let switching = false;
-
-function applyMode(next) {
+function switchMode(next) {
+  if (next === mode) return;
   const y = scroller.scrollTop;
   const secTop = topOf(worksSection);
   const inWorks = y >= secTop - 1 && y < secTop + worksSection.offsetHeight;
@@ -377,60 +393,10 @@ function applyMode(next) {
   document.body.dataset.mode = next;
   renderWorks();
 
-  // 작업물 섹션에서 눌렀다면 첫 작업물로 맞춤, 그 외에는 그 자리 그대로
-  if (inWorks) scrollToY(topOf(worksSection), true);
+  // 작업물 섹션에서 눌렀다면 첫 작업물로 맞춤 (모바일 목록은 그 자리 그대로)
+  if (inWorks && getComputedStyle(worksTrack).display !== 'none') scrollToY(topOf(worksSection), true);
 }
 
-function switchMode(next) {
-  if (switching || next === mode) return;
-
-  if (reduceMotion) { applyMode(next); return; }
-
-  switching = true;
-  switchCurtain(next).then(() => { switching = false; });
-}
-
-// 전환 (2026-11-12): 로딩 종이를 다시 씀. 헤더 아래 선과 히어로 아래 선 자리에 종이를 깔고(헤더 글자가 사라짐)
-// → 두 선이 가운데로 모여 닫힘 → 덮인 동안 모드를 바꾸고 히어로 연출을 처음 상태로 → 다시 벌어지며 열림 → 종이가 걷히며 헤더 글자가 생김
-async function switchCurtain(next) {
-  const heroBottom = hero.getBoundingClientRect().bottom;
-  const frame = scroller.getBoundingClientRect();
-  const top = Math.max(header.getBoundingClientRect().bottom, frame.top);
-  // 히어로 아래 선이 화면 안에 보이면 거기, 아니면 화면 아래 테두리
-  const bottom = heroBottom > top + 40 && heroBottom <= frame.bottom ? heroBottom : frame.bottom;
-  const center = innerHeight / 2;   // 닫혔을 때 두 종이가 만나는 가운데 선
-  loader.style.setProperty('--open-top', `${top - center}px`);
-  loader.style.setProperty('--open-bottom', `${bottom - center}px`);
-  loader.style.setProperty('--line-p', 1);
-
-  // 1) 열린 자리에 종이를 바로 놓고 서서히 나타냄 (안 움직이는 부분은 그대로 보여서 헤더 글자만 사라지는 것처럼 보임)
-  loader.classList.add('is-switch', 'is-open', 'is-fade');
-  loader.classList.remove('is-done');
-  loader.getBoundingClientRect();
-  loader.classList.remove('is-fade');
-  await wait(300);
-  // 2) 가운데로 닫힘
-  loader.classList.remove('is-open');
-  await wait(780);
-  // 3) 덮인 동안 바꾸기 + 히어로 연출을 처음 상태로 되돌림
-  applyMode(next);
-  document.body.classList.add('hero-reset');
-  document.body.classList.remove('hero-set');
-  document.body.getBoundingClientRect();
-  document.body.classList.remove('hero-reset');
-  await wait(120);
-  // 4) 다시 열림 → 히어로 연출 다시 재생 → 종이가 걷힘
-  loader.classList.add('is-open');
-  await wait(800);
-  document.body.classList.add('hero-set');
-  await wait(300);
-  loader.classList.add('is-fade');
-  await wait(400);
-  loader.classList.add('is-done');
-  loader.classList.remove('is-switch');
-}
-
-// 헤더 로고 옆 Web / Video 버튼 (2026-11-12)
 document.querySelectorAll('[data-switch]').forEach((btn) => {
   btn.addEventListener('click', () => switchMode(btn.dataset.switch));
 });
@@ -554,9 +520,9 @@ function showModal(title, html, detail, from) {
   document.getElementById('modalClose').focus({ preventScroll: true });
 }
 
-// [Discover] 버튼 (PC 띠·모바일 목록 공통)
+// 작업물 이미지 (PC 띠·모바일 목록 공통)
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.discover');
+  const btn = e.target.closest('.open-work');
   if (btn) openWork(Number(btn.dataset.index), btn);
 });
 

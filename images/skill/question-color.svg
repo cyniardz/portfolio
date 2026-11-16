@@ -1,0 +1,5 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 기획·운영 컬러: 주황 물음표 (레퍼런스 분필 물음표) -->
+  <path d="M335 215 C335 160 372 130 410 130 C452 130 478 160 474 198 C470 238 424 252 410 290 L406 335" fill="none" stroke="#F58A1F" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="406" cy="400" r="20" fill="#F58A1F"/>
+</svg>

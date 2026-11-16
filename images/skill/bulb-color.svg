@@ -1,0 +1,15 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 기획·운영 컬러: 물음표가 전구로 (2026-11-16 레퍼런스: 분필 물음표 → 노란 전구) -->
+  <g stroke="#F5B800" stroke-width="12" stroke-linecap="round">
+    <path d="M400 92 V62"/><path d="M318 118 L298 96"/><path d="M482 118 L502 96"/>
+    <path d="M272 186 L244 176"/><path d="M528 186 L556 176"/><path d="M268 258 L240 264"/><path d="M532 258 L560 264"/>
+  </g>
+  <path d="M352 352 C312 326 292 288 296 244 C302 182 348 140 400 140 C452 140 498 182 504 244 C508 288 488 326 448 352 L444 386 H356 Z" fill="#FFD23F" stroke="#2b2b2b" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M372 384 L364 300 C356 262 386 262 384 290 C382 316 400 316 400 290 C400 264 418 264 416 290 C414 316 444 316 436 290 C434 262 444 262 436 300 L428 384" fill="none" stroke="#2b2b2b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#fff" stroke="#2b2b2b" stroke-width="7" stroke-linejoin="round">
+    <rect x="354" y="386" width="92" height="22" rx="4"/>
+    <rect x="358" y="408" width="84" height="22" rx="4"/>
+    <rect x="364" y="430" width="72" height="22" rx="4"/>
+  </g>
+  <path d="M378 452 Q400 478 422 452" fill="#2b2b2b"/>
+</svg>
