@@ -999,16 +999,26 @@ img.tone { display: block; object-fit: cover; }   /* 칸 크기(455×400)는 고
 
   /* 히어로: 사진을 맨 위로, 나머지는 위아래로 쌓음 (선은 아래 띠 위에만) */
   .hero-cell { font-size: 16px; padding-top: 28px; }
-  .hero-photo { order: -1; min-height: 70vh; }
+  /* 사진 + MAKE WEB + 세 줄이 첫 화면에 다 들어오게 사진 높이를 줄이고, 툴 아이콘은 그 아래 */
+  .hero-photo { order: -1; min-height: 0; height: 56svh; }
   .profile-photo { height: 100%; }   /* 모바일은 사진 칸이 따로라 원래대로 꽉 채움 */
-  .works-peek { bottom: auto; top: calc(70vh - 76px); }   /* 첫 화면(사진 아래쪽)에서 보이게 */
+  .works-peek { bottom: auto; top: calc(56svh - 76px); }   /* 첫 화면(사진 아래쪽)에서 보이게 */
+  .hero .hero-a { gap: 0; padding: 22px var(--pad) 24px; }
+  .hero-list { --gap: 8px; margin-top: 18px; font-size: 16px; line-height: 1.5; letter-spacing: -0.01em; }
   .text-lg { font-size: 18px; }
 
   .works-track { display: none; }
   .works-mobile { display: block; padding: 32px var(--pad); }
-  .m-item { margin-top: 36px; }
+  .works-mobile .works-mode { margin-bottom: 0; }
+  .works-mobile .works-mode > span:last-child { display: none; }   /* 모바일 머리글은 Web/Video만 (기간은 각 작품 제목 옆에 있음) */
+  .works-mobile { letter-spacing: -0.04em; }   /* 고정폭 글꼴이라 좁은 화면에서 글자 사이가 넓어 보임 */
+  .m-item { margin-top: 28px; }
+  .m-item + .m-item { margin-top: 64px; }   /* 작품끼리 확실히 떨어지게 */
   .m-item .tone { aspect-ratio: 4 / 3; height: auto; }
   .m-title { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; font-weight: 600; }
+  /* 모바일: 작업물 제목·설명, 자세히 보기 창 설명·작업 과정을 PC보다 2px 작게 */
+  .m-title, .m-item .text { font-size: 13px; }
+  .detail-summary, .detail-steps li { font-size: 12px; }
   .m-image { position: relative; }
   .m-image .actions { opacity: 1; pointer-events: auto; bottom: 14px; }   /* 모바일은 항상 보임 */
 }

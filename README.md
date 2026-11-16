@@ -39,7 +39,7 @@
 | | Web | Video |
 |---|---|---|
 | 히어로 | 흑백 화면 속 컬러 사진, MAKE WEB | 흑연 그림이 찢어지며 얼굴만 컬러, MAKE VIDEO |
-| 작업물 | 웹 작업 4개 | 영상 작업 5개 |
+| 작업물 | 웹 작업 5개 | 영상 작업 5개 |
 | 사용 툴 | VS Code, Claude, Figma, React 등 | Premiere Pro, After Effects, Cinema 4D 등 |
 
 ## 화면 구성
