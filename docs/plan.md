@@ -283,6 +283,7 @@
     - 2026-11-12: 영상 작업물에 **키네틱 타이포그래피 BERMUDA TRIANGLE** 추가 (유튜브 nSTtephMCrw, 기획 PDF = 전체 포폴 8쪽 `process/kinetic.pdf`, 대표 이미지 = 영상 10초 "범" 장면, 내가 고른 것 `images/video/kinetic.webp`)
     - **(2026-11-15) 목록 이름 = 작업물 이름 (내가 정함)**: 김밥천국 레드 / Random Book / 한살림 꾸러미 / momo 쇼핑몰 / SiGNAL 광고 (이전: 리뉴얼 페이지 / 랜덤 북 / 일체형 페이지 1·2 / 앱 광고)
     - 2026-11-12: 영상 목록 이름을 짧게 (listTitle) — 앱 광고 / 런치패드 광고 / 시민안전 숏폼 / 콘텐츠산업 광고 / 키네틱 타이포그래피. 자세한 제목은 Discover 창에서. 기간·도구는 확인 필요. **(2026-11-15, 내가 정함) 키네틱 타이포그래피는 목록·Discover 제목·소개 타임라인 모두 "BERMUDA TRIANGLE"만** 29초 영화제 리뷰(전체 포폴 9쪽, youtu.be/RjoaVI3030I)·투니버스 채널 광고(11쪽, youtu.be/2csNLrVUoII)는 **고민 중**
+    - **(2026-11-18, 내가 정함) 이름 대문자**: RANDOM BOOK / MOMO 쇼핑몰 / MOMO 사계절 (목록·Discover 제목·소개 타임라인). momo 사계절 한 줄 소개 속 "momo"는 그대로. 대표 이미지는 새 첫 화면 스크린샷(MOMO'S FOUR SEASONS)으로 교체, 양옆을 잘라 792×696
     - 지금 완성: 김밥천국 레드, Random Book, 한살림, 영상 5개 (2026-11-12). momo 쇼핑몰은 기획안 슬라이드 9장을 PDF로 묶어 `process/momo.pdf`로 연결 (2026-11-16). 나머지는 PDF를 받으면 주소만 바꿈 — 그 전까지 버튼 숨김 (Figma·GitHub·구글 문서 주소는 projects.json에 남아 있지만 안 씀)
     - GitHub 버튼은 우선 넣지 않음 (2026-11-12)
   - (이전) [Process]: 김밥천국 레드 = 포트폴리오 PDF 12p(`process/`) / Random Book = Figma 와이어프레임 / 한살림·momo = GitHub 저장소
